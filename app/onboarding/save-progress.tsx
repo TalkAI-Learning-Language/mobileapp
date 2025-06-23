@@ -11,7 +11,7 @@ import {
     const router = useRouter();
   
     const handleEmailContinue = () => {
-      router.push('/onboarding/ready');
+      router.push('/onboarding/signup');
     };
   
     const handleGoogleContinue = () => {
@@ -31,17 +31,25 @@ import {
         {/* Header */}
         <View style={styles.header}>
           <TouchableOpacity onPress={handleBack} style={styles.backButton}>
-            <Text style={styles.backButtonText}>←</Text>
+            <Image
+              source={require('@/assets/images/buttons/arrow_left.png')}
+              style={styles.iconImage}
+              resizeMode="contain"
+            />
           </TouchableOpacity>
           <TouchableOpacity style={styles.soundButton}>
-            <Text style={styles.soundButtonText}>🔊</Text>
+            <Image
+              source={require('@/assets/images/buttons/volumn.png')}
+              style={styles.iconImage}
+              resizeMode="contain"
+            />
           </TouchableOpacity>
         </View>
   
         {/* Background Image with Teacher */}
         <View style={styles.backgroundContainer}>
           <Image
-            source={{ uri: 'https://images.pexels.com/photos/3769021/pexels-photo-3769021.jpeg?auto=compress&cs=tinysrgb&w=400' }}
+            source={require('@/assets/images/default_avatar.png')}
             style={styles.backgroundImage}
           />
         </View>
@@ -54,16 +62,24 @@ import {
             style={styles.emailButton}
             onPress={handleEmailContinue}
           >
-            <Text style={styles.emailIcon}>✉️</Text>
-            <Text style={styles.emailButtonText}>Continue with Email</Text>
+            <Image
+              source={require('@/assets/images/buttons/email.png')}
+              style={styles.iconImage}
+              resizeMode="contain"
+            />
+            <Text style={styles.emailButtonText}> Continue with Email</Text>
           </TouchableOpacity>
   
           <TouchableOpacity 
             style={styles.googleButton}
             onPress={handleGoogleContinue}
           >
-            <Text style={styles.googleIcon}>G</Text>
-            <Text style={styles.googleButtonText}>Continue with Google</Text>
+            <Image
+              source={require('@/assets/images/buttons/gmail.png')}
+              style={styles.iconImage}
+              resizeMode="contain"
+            />
+            <Text style={styles.googleButtonText}> Continue with Google</Text>
           </TouchableOpacity>
   
           <Text style={styles.orText}>Or continue with</Text>
@@ -73,19 +89,31 @@ import {
               style={styles.socialButton}
               onPress={() => handleSocialContinue('facebook')}
             >
-              <Text style={styles.socialIcon}>f</Text>
+              <Image
+                source={require('@/assets/images/buttons/facebook.png')}
+                style={styles.iconImage}
+                resizeMode="contain"
+              />
             </TouchableOpacity>
             <TouchableOpacity 
               style={styles.socialButton}
               onPress={() => handleSocialContinue('twitter')}
             >
-              <Text style={styles.socialIcon}>𝕏</Text>
+              <Image
+                source={require('@/assets/images/buttons/twitter.png')}
+                style={styles.iconImage}
+                resizeMode="contain"
+              />
             </TouchableOpacity>
             <TouchableOpacity 
               style={styles.socialButton}
               onPress={() => handleSocialContinue('apple')}
             >
-              <Text style={styles.socialIcon}>🍎</Text>
+              <Image
+                source={require('@/assets/images/buttons/apple.png')}
+                style={styles.iconImage}
+                resizeMode="contain"
+              />
             </TouchableOpacity>
           </View>
         </View>
@@ -140,7 +168,7 @@ import {
     },
     backgroundImage: {
       width: '100%',
-      height: '100%',
+      height: '140%',
       resizeMode: 'cover',
     },
     bottomSection: {
@@ -222,5 +250,11 @@ import {
     socialIcon: {
       fontSize: 20,
       fontWeight: 'bold',
+    },
+    iconImage: {
+      backgroundColor: 'transparent',
+      width: 24,
+      height: 24,
+      alignSelf: 'center',
     },
   });

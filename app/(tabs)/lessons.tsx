@@ -4,8 +4,11 @@ import {
   StyleSheet, 
   SafeAreaView, 
   ScrollView,
-  TouchableOpacity 
+  TouchableOpacity,
+  Image
 } from 'react-native';
+
+import { LinearGradient } from 'expo-linear-gradient'; // Add this import
 
 const LESSONS = [
   { 
@@ -74,8 +77,12 @@ export default function LessonsTab() {
           <View style={styles.titleContainer}>
             <Text style={styles.title}>Lessons</Text>
             <View style={styles.streakContainer}>
-              <Text style={styles.streakIcon}>❤️</Text>
-              <Text style={styles.streakNumber}>1</Text>
+              <Image
+                source={require('@/assets/images/lessons/cup.png')}
+                style={styles.iconImage}
+                resizeMode="contain"
+              />
+              <Text style={styles.streakNumber}> 1</Text>
             </View>
           </View>
         </View>
@@ -83,34 +90,68 @@ export default function LessonsTab() {
         {/* Stats Cards */}
         <View style={styles.statsContainer}>
           <View style={styles.statCard}>
-            <Text style={styles.statIcon}>⏱️</Text>
-            <Text style={styles.statValue}>20 min</Text>
             <Text style={styles.statLabel}>Time</Text>
+            <View style={styles.statRow}>
+              <Image
+                source={require('@/assets/images/lessons/cup.png')}
+                style={styles.iconImage}
+                resizeMode="contain"
+              />
+              <Text style={styles.statValue}>20 min</Text>
+            </View>
           </View>
           <View style={styles.statCard}>
-            <Text style={styles.statIcon}>📚</Text>
-            <Text style={styles.statValue}>2</Text>
             <Text style={styles.statLabel}>Lessons</Text>
+            <View style={styles.statRow}>
+              <Image
+                source={require('@/assets/images/lessons/book.png')}
+                style={styles.iconImage}
+                resizeMode="contain"
+              />
+              <Text style={styles.statValue}>2</Text>
+            </View>
           </View>
           <View style={styles.statCard}>
-            <Text style={styles.statIcon}>📖</Text>
-            <Text style={styles.statValue}>1</Text>
             <Text style={styles.statLabel}>Units</Text>
+            <View style={styles.statRow}>
+              <Image
+                source={require('@/assets/images/lessons/unit.png')}
+                style={styles.iconImage}
+                resizeMode="contain"
+              />
+              <Text style={styles.statValue}>1</Text>
+            </View>
           </View>
         </View>
 
         {/* Current Lesson */}
         <View style={styles.currentLessonContainer}>
-          <View style={styles.currentLesson}>
-            <View style={styles.currentLessonContent}>
-              <Text style={styles.currentLessonTitle}>Grammar</Text>
-              <Text style={styles.currentLessonSubtitle}>Unit 1</Text>
-            </View>
-            <TouchableOpacity style={styles.continueButton}>
-              <Text style={styles.continueButtonText}>Continue</Text>
-            </TouchableOpacity>
-          </View>
+          
         </View>
+
+        <TouchableOpacity
+          style={{ marginBottom: 20 }}
+          activeOpacity={0.8}
+        >
+          <LinearGradient
+            colors={['#667EEA', '#764BA2']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            style={[
+              styles.continueButton
+            ]}
+          >
+            <View style={styles.currentLesson}>
+              <View style={styles.currentLessonContent}>
+                <Text style={styles.currentLessonTitle}>Grammar</Text>
+                <Text style={styles.currentLessonSubtitle}>Unit 1</Text>
+              </View>
+              <TouchableOpacity style={styles.continueButton}>
+                <Text style={styles.continueButtonText}>Continue</Text>
+              </TouchableOpacity>
+            </View>
+          </LinearGradient>
+        </TouchableOpacity>
 
         {/* Unit Section */}
         <View style={styles.unitSection}>
@@ -148,7 +189,7 @@ export default function LessonsTab() {
                   styles.lessonTitle,
                   lesson.locked && styles.lessonTitleLocked
                 ]}>
-                  {lesson.title}
+                  {lesson.icon} {lesson.title}
                 </Text>
               </View>
               
@@ -165,12 +206,11 @@ export default function LessonsTab() {
                 ]}>
                   Play
                 </Text>
-                <Text style={[
-                  styles.playIcon,
-                  lesson.locked && styles.playIconLocked
-                ]}>
-                  ▶
-                </Text>
+                <Image
+                  source={require('@/assets/images/lessons/play.png')}
+                  style={styles.iconImage}
+                  resizeMode="contain"
+                />
               </TouchableOpacity>
             </TouchableOpacity>
           ))}
@@ -190,7 +230,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   header: {
-    paddingTop: 20,
+    paddingTop: 60,
     marginBottom: 24,
   },
   titleContainer: {
@@ -223,7 +263,6 @@ const styles = StyleSheet.create({
   statsContainer: {
     flexDirection: 'row',
     gap: 12,
-    marginBottom: 24,
   },
   statCard: {
     flex: 1,
@@ -250,9 +289,6 @@ const styles = StyleSheet.create({
     marginBottom: 32,
   },
   currentLesson: {
-    backgroundColor: '#667EEA',
-    borderRadius: 20,
-    padding: 20,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -323,8 +359,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   lessonIconContainer: {
-    width: 40,
-    height: 40,
+    width: 30,
+    height: 30,
     borderRadius: 20,
     backgroundColor: '#F3F4F6',
     alignItems: 'center',
@@ -332,7 +368,7 @@ const styles = StyleSheet.create({
     marginRight: 16,
   },
   lessonIconCompleted: {
-    backgroundColor: '#10B981',
+    backgroundColor: '#343434',
   },
   lessonIconLocked: {
     backgroundColor: '#E5E7EB',
@@ -382,5 +418,18 @@ const styles = StyleSheet.create({
   },
   playIconLocked: {
     color: '#9CA3AF',
+  }, 
+  iconImage: {
+    backgroundColor: 'transparent',
+    width: 20,
+    height: 20,
+    alignSelf: 'center',
   },
+  lessonCard: {
+    flex: 1,
+    backgroundColor: '#08080833'
+  }, 
+  statRow: {
+
+  }
 });

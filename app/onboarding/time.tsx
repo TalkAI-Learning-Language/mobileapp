@@ -33,10 +33,18 @@ export default function TimeScreen() {
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={handleBack} style={styles.backButton}>
-          <Text style={styles.backButtonText}>←</Text>
+          <Image
+            source={require('@/assets/images/buttons/arrow_left.png')}
+            style={styles.iconImage}
+            resizeMode="contain"
+          />
         </TouchableOpacity>
         <TouchableOpacity style={styles.soundButton}>
-          <Text style={styles.soundButtonText}>🔊</Text>
+          <Image
+            source={require('@/assets/images/buttons/volumn.png')}
+            style={styles.iconImage}
+            resizeMode="contain"
+          />
         </TouchableOpacity>
       </View>
 
@@ -53,7 +61,6 @@ export default function TimeScreen() {
             <Text style={styles.messageText}>
               No pressure! Just choose what works for you 😊
             </Text>
-            <View style={styles.speechBubbleTail} />
           </View>
         </View>
       </View>
@@ -159,7 +166,7 @@ const styles = StyleSheet.create({
   },
   backgroundImage: {
     width: '100%',
-    height: '100%',
+    height: '140%',
     resizeMode: 'cover',
   },
   speechBubbleContainer: {
@@ -211,7 +218,6 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 24,
     paddingHorizontal: 24,
     paddingTop: 32,
-    paddingBottom: 40,
   },
   title: {
     fontSize: 20,
@@ -229,7 +235,7 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     paddingHorizontal: 24,
     backgroundColor: '#F8F9FA',
-    borderRadius: 24,
+    borderRadius: 50,
     borderWidth: 2,
     borderColor: 'transparent',
   },
@@ -280,5 +286,11 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: '600',
+  },
+  iconImage: {
+    backgroundColor: 'transparent',
+    width: 24,
+    height: 24,
+    alignSelf: 'center',
   },
 });

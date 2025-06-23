@@ -10,23 +10,35 @@ import {
 import { useRouter } from 'expo-router';
 
 const REASONS = [
-  { id: 'work', title: 'For work', icon: '🎓' },
-  { id: 'school', title: 'For school or exams', icon: '🎓' },
-  { id: 'daily', title: 'To speak better in daily life', icon: '💬' },
-  { id: 'dating', title: 'For dating and social life', icon: '❤️' },
-  { id: 'speak', title: 'I just want to speak English well', icon: '🌐' },
-  { id: 'pronunciation', title: 'Improve pronunciation', icon: '🎤' },
-  { id: 'other', title: 'Other', icon: '⚪' },
+  { id: 'work', title: 'For work', image: 'work.png' },
+  { id: 'school', title: 'For school or exams', image: 'school.png' },
+  { id: 'daily', title: 'To speak better in daily life', image: 'daily.png' },
+  { id: 'dating', title: 'For dating and social life', image: 'dating.png' },
+  { id: 'speak', title: 'I just want to speak English well', image: 'speak.png' },
+  { id: 'pronunciation', title: 'Improve pronunciation', image: 'pronunciation.png' },
+  { id: 'other', title: 'Other', image: 'other.png' },
 ];
+
+const reasonImages = {
+  'work.png': require('@/assets/images/reasons/work.png'),
+  'school.png': require('@/assets/images/reasons/school.png'),
+  'daily.png': require('@/assets/images/reasons/daily.png'),
+  'dating.png': require('@/assets/images/reasons/dating.png'),
+  'speak.png': require('@/assets/images/reasons/speak.png'),
+  'pronunciation.png': require('@/assets/images/reasons/pronunciation.png'),
+  'other.png': require('@/assets/images/reasons/other.png'),
+} as const;
+
+type ReasonImageKey = keyof typeof reasonImages;
 
 export default function ReasonScreen() {
   const [selectedReason, setSelectedReason] = useState<string>('');
   const router = useRouter();
 
   const handleContinue = () => {
-    if (selectedReason) {
+    // if (selectedReason) {
       router.push('/onboarding/time');
-    }
+    // }
   };
 
   const handleBack = () => {
@@ -38,10 +50,18 @@ export default function ReasonScreen() {
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={handleBack} style={styles.backButton}>
-          <Text style={styles.backButtonText}>←</Text>
+          <Image
+            source={require('@/assets/images/buttons/arrow_left.png')}
+            style={styles.iconImage}
+            resizeMode="contain"
+          />
         </TouchableOpacity>
         <TouchableOpacity style={styles.soundButton}>
-          <Text style={styles.soundButtonText}>🔊</Text>
+          <Image
+            source={require('@/assets/images/buttons/volumn.png')}
+            style={styles.iconImage}
+            resizeMode="contain"
+          />
         </TouchableOpacity>
       </View>
 
@@ -66,9 +86,16 @@ export default function ReasonScreen() {
                   styles.reasonItem,
                   selectedReason === reason.id && styles.reasonItemSelected
                 ]}
-                onPress={() => setSelectedReason(reason.id)}
+                onPress={() => {
+                  setSelectedReason(reason.id);
+                  handleContinue();
+                }}
               >
-                <Text style={styles.reasonIcon}>{reason.icon}</Text>
+                <Image
+                  source={reasonImages[reason.image as keyof typeof reasonImages]}
+                  style={styles.reasonIcon}
+                  resizeMode="contain"
+                />
                 <Text style={[
                   styles.reasonText,
                   selectedReason === reason.id && styles.reasonTextSelected
@@ -80,16 +107,6 @@ export default function ReasonScreen() {
           </View>
         </ScrollView>
 
-        <TouchableOpacity 
-          style={[
-            styles.continueButton,
-            !selectedReason && styles.continueButtonDisabled
-          ]}
-          onPress={handleContinue}
-          disabled={!selectedReason}
-        >
-          <Text style={styles.continueButtonText}>Continue</Text>
-        </TouchableOpacity>
       </View>
     </View>
   );
@@ -142,7 +159,7 @@ const styles = StyleSheet.create({
   },
   backgroundImage: {
     width: '100%',
-    height: '100%',
+    height: '140%',
     resizeMode: 'cover',
   },
   bottomSection: {
@@ -152,7 +169,6 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 24,
     paddingHorizontal: 24,
     paddingTop: 32,
-    paddingBottom: 40,
   },
   title: {
     fontSize: 20,
@@ -174,7 +190,7 @@ const styles = StyleSheet.create({
   reasonItem: {
     width: '48%',
     backgroundColor: '#F8F9FA',
-    borderRadius: 12,
+    borderRadius: 30,
     padding: 20,
     alignItems: 'center',
     justifyContent: 'center',
@@ -214,5 +230,11 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: '600',
+  },
+  iconImage: {
+    backgroundColor: 'transparent',
+    width: 24,
+    height: 24,
+    alignSelf: 'center',
   },
 });

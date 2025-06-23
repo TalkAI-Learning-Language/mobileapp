@@ -26,10 +26,18 @@ export default function GreetingScreen() {
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={handleBack} style={styles.backButton}>
-          <Text style={styles.backButtonText}>←</Text>
+          <Image
+            source={require('@/assets/images/buttons/arrow_left.png')}
+            style={styles.iconImage}
+            resizeMode="contain"
+          />
         </TouchableOpacity>
         <TouchableOpacity style={styles.soundButton}>
-          <Text style={styles.soundButtonText}>🔊</Text>
+          <Image
+            source={require('@/assets/images/buttons/volumn.png')}
+            style={styles.iconImage}
+            resizeMode="contain"
+          />
         </TouchableOpacity>
       </View>
 
@@ -185,5 +193,11 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: '600',
+  },
+  iconImage: {
+    backgroundColor: 'transparent',
+    width: 24,
+    height: 24,
+    alignSelf: 'center',
   },
 });

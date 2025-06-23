@@ -15,7 +15,7 @@ const TEACHERS = [
     name: 'Mary Carter',
     accent: 'American',
     traits: ['Gentle', 'Calming'],
-    image: 'https://images.pexels.com/photos/3769021/pexels-photo-3769021.jpeg?auto=compress&cs=tinysrgb&w=200',
+    image: 'teacher_1.png',
     selected: true,
   },
   {
@@ -23,7 +23,7 @@ const TEACHERS = [
     name: 'James Wilson',
     accent: 'British',
     traits: ['Emotional', 'Funny'],
-    image: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=200',
+    image: 'teacher_2.png',
     selected: false,
   },
   {
@@ -31,7 +31,7 @@ const TEACHERS = [
     name: 'Michael John',
     accent: 'American',
     traits: ['Smooth', 'Funny'],
-    image: 'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=200',
+    image: 'teacher_3.png',
     selected: false,
   },
   {
@@ -39,10 +39,17 @@ const TEACHERS = [
     name: 'Emily Parker',
     accent: 'American',
     traits: ['Sarcastic', 'Rough'],
-    image: 'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=200',
+    image: 'teacher_4.png',
     selected: false,
   },
 ];
+
+const teacherImages = {
+  'teacher_1.png': require('@/assets/images/teacher/teacher_1.png'),
+  'teacher_2.png': require('@/assets/images/teacher/teacher_2.png'),
+  'teacher_3.png': require('@/assets/images/teacher/teacher_3.png'),
+  'teacher_4.png': require('@/assets/images/teacher/teacher_4.png'),
+};
 
 export default function TeacherScreen() {
   const [selectedTeacher, setSelectedTeacher] = useState('mary');
@@ -61,17 +68,25 @@ export default function TeacherScreen() {
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={handleBack} style={styles.backButton}>
-          <Text style={styles.backButtonText}>←</Text>
+          <Image
+            source={require('@/assets/images/buttons/arrow_left.png')}
+            style={styles.iconImage}
+            resizeMode="contain"
+          />
         </TouchableOpacity>
         <TouchableOpacity style={styles.soundButton}>
-          <Text style={styles.soundButtonText}>🔊</Text>
+          <Image
+            source={require('@/assets/images/buttons/volumn.png')}
+            style={styles.iconImage}
+            resizeMode="contain"
+          />
         </TouchableOpacity>
       </View>
 
       {/* Background Image with Teacher */}
       <View style={styles.backgroundContainer}>
         <Image
-          source={{ uri: 'https://images.pexels.com/photos/3769021/pexels-photo-3769021.jpeg?auto=compress&cs=tinysrgb&w=400' }}
+          source={require('@/assets/images/default_avatar.png')}
           style={styles.backgroundImage}
         />
       </View>
@@ -88,9 +103,15 @@ export default function TeacherScreen() {
                 styles.teacherItem,
                 selectedTeacher === teacher.id && styles.teacherItemSelected
               ]}
-              onPress={() => setSelectedTeacher(teacher.id)}
+              onPress={() => {
+                setSelectedTeacher(teacher.id);
+                handleContinue();
+              }}
             >
-              <Image source={{ uri: teacher.image }} style={styles.teacherImage} />
+              <Image
+                source={teacherImages[teacher.image as keyof typeof teacherImages]}
+                style={styles.teacherImage}
+              />
               <View style={styles.teacherInfo}>
                 <View style={styles.teacherHeader}>
                   <Text style={styles.teacherName}>{teacher.name}</Text>
@@ -110,13 +131,6 @@ export default function TeacherScreen() {
             </TouchableOpacity>
           ))}
         </ScrollView>
-
-        <TouchableOpacity 
-          style={styles.continueButton}
-          onPress={handleContinue}
-        >
-          <Text style={styles.continueButtonText}>Continue</Text>
-        </TouchableOpacity>
       </View>
     </View>
   );
@@ -164,12 +178,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   backgroundContainer: {
-    height: '35%',
+    height: '45%',
     position: 'relative',
   },
   backgroundImage: {
     width: '100%',
-    height: '100%',
+    height: '140%',
     resizeMode: 'cover',
   },
   bottomSection: {
@@ -179,7 +193,6 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 24,
     paddingHorizontal: 24,
     paddingTop: 32,
-    paddingBottom: 40,
   },
   title: {
     fontSize: 18,
@@ -264,5 +277,11 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: '600',
+  },
+  iconImage: {
+    backgroundColor: 'transparent',
+    width: 24,
+    height: 24,
+    alignSelf: 'center',
   },
 });
