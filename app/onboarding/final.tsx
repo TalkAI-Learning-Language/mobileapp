@@ -6,6 +6,8 @@ import {
     Image
   } from 'react-native';
   import { useRouter } from 'expo-router';
+
+  import { LinearGradient } from 'expo-linear-gradient'; // Add this import
   
   export default function FinalScreen() {
     const router = useRouter();
@@ -23,18 +25,25 @@ import {
         {/* Header */}
         <View style={styles.header}>
           <TouchableOpacity onPress={handleBack} style={styles.backButton}>
-            <Text style={styles.backButtonText}>←</Text>
+            <Image
+              source={require('@/assets/images/buttons/arrow_left.png')}
+              style={styles.iconImage}
+              resizeMode="contain"
+            />
           </TouchableOpacity>
-          <View style={styles.timerContainer}>
-            <Text style={styles.timerIcon}>⏱️</Text>
-            <Text style={styles.timerText}>10:00</Text>
-          </View>
+          <TouchableOpacity style={styles.soundButton}>
+            <Image
+              source={require('@/assets/images/buttons/volumn.png')}
+              style={styles.iconImage}
+              resizeMode="contain"
+            />
+          </TouchableOpacity>
         </View>
   
         {/* Background Image with Teacher */}
         <View style={styles.backgroundContainer}>
           <Image
-            source={{ uri: 'https://images.pexels.com/photos/3769021/pexels-photo-3769021.jpeg?auto=compress&cs=tinysrgb&w=400' }}
+            source={require('@/assets/images/default_avatar.png')}
             style={styles.backgroundImage}
           />
           
@@ -44,20 +53,27 @@ import {
               <Text style={styles.messageText}>
                 You now have 10 minutes of free speaking time with Sarah Miller
               </Text>
-              <View style={styles.speechBubbleTail} />
             </View>
           </View>
         </View>
   
         {/* White Bottom Section */}
-        <View style={styles.bottomSection}>
-          <TouchableOpacity 
-            style={styles.startButton}
-            onPress={handleStartLesson}
+        <TouchableOpacity
+          onPress={handleStartLesson}
+          style={styles.startLessonButton}
+          activeOpacity={0.8}
+        >
+          <LinearGradient
+            colors={['#667EEA', '#764BA2']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            style={[
+              styles.continueButton
+            ]}
           >
-            <Text style={styles.startButtonText}>Start My First Lesson</Text>
-          </TouchableOpacity>
-        </View>
+            <Text style={styles.continueButtonText}>Start My First Lesson</Text>
+          </LinearGradient>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -115,14 +131,14 @@ import {
     },
     backgroundImage: {
       width: '100%',
-      height: '100%',
+      height: '120%',
       resizeMode: 'cover',
     },
     speechBubbleContainer: {
       position: 'absolute',
       bottom: 40,
-      left: 20,
-      right: 20,
+      left: 5,
+      right: 5,
       alignItems: 'center',
     },
     speechBubble: {
@@ -181,4 +197,33 @@ import {
       fontSize: 16,
       fontWeight: '600',
     },
+    continueButton: {
+      backgroundColor: '#667EEA',
+      borderRadius: 50,
+      padding: 16,
+      alignItems: 'center',
+    },
+    continueButtonText: {
+      color: '#FFFFFF',
+      fontSize: 16,
+      fontWeight: '600',
+    },
+    startLessonButton: {
+      margin: 20,
+      borderRadius: 50
+    },
+    iconImage: {
+      backgroundColor: 'transparent',
+      width: 24,
+      height: 24,
+      alignSelf: 'center',
+    },
+    soundButton: {
+      width: 40,
+      height: 40,
+      borderRadius: 20,
+      backgroundColor: 'rgba(255, 255, 255, 0.9)',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },   
   });

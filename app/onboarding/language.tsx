@@ -38,10 +38,18 @@ export default function LanguageScreen() {
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={handleBack} style={styles.backButton}>
-          <Text style={styles.backButtonText}>←</Text>
+          <Image
+            source={require('@/assets/images/buttons/arrow_left.png')}
+            style={styles.iconImage}
+            resizeMode="contain"
+          />
         </TouchableOpacity>
         <TouchableOpacity style={styles.soundButton}>
-          <Text style={styles.soundButtonText}>🔊</Text>
+          <Image
+            source={require('@/assets/images/buttons/volumn.png')}
+            style={styles.iconImage}
+            resizeMode="contain"
+          />
         </TouchableOpacity>
       </View>
 
@@ -65,7 +73,11 @@ export default function LanguageScreen() {
                 styles.languageItem,
                 selectedLanguage === language.id && styles.languageItemSelected
               ]}
-              onPress={() => setSelectedLanguage(language.id)}
+              onPress={() => {
+                  setSelectedLanguage(language.id);
+                  handleContinue()
+                }
+              }
             >
               <Text style={styles.languageFlag}>{language.flag}</Text>
               <Text style={[
@@ -82,13 +94,6 @@ export default function LanguageScreen() {
             </TouchableOpacity>
           ))}
         </ScrollView>
-
-        <TouchableOpacity 
-          style={styles.continueButton}
-          onPress={handleContinue}
-        >
-          <Text style={styles.continueButtonText}>Continue</Text>
-        </TouchableOpacity>
       </View>
     </View>
   );
@@ -141,7 +146,7 @@ const styles = StyleSheet.create({
   },
   backgroundImage: {
     width: '100%',
-    height: '100%',
+    height: '140%',
     resizeMode: 'cover',
   },
   bottomSection: {
@@ -151,7 +156,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 24,
     paddingHorizontal: 24,
     paddingTop: 32,
-    paddingBottom: 40,
+    paddingBottom: 20,
   },
   title: {
     fontSize: 20,
@@ -162,7 +167,6 @@ const styles = StyleSheet.create({
   },
   languageList: {
     flex: 1,
-    marginBottom: 20,
   },
   languageItem: {
     flexDirection: 'row',
@@ -170,8 +174,8 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     paddingHorizontal: 20,
     marginBottom: 8,
-    backgroundColor: '#F8F9FA',
-    borderRadius: 12,
+    backgroundColor: '#F5F7FB',
+    borderRadius: 50,
     borderWidth: 2,
     borderColor: 'transparent',
   },
@@ -215,5 +219,11 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: '600',
+  },
+  iconImage: {
+    backgroundColor: 'transparent',
+    width: 24,
+    height: 24,
+    alignSelf: 'center',
   },
 });
