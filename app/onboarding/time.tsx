@@ -33,10 +33,18 @@ export default function TimeScreen() {
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={handleBack} style={styles.backButton}>
-          <Text style={styles.backButtonText}>←</Text>
+          <Image
+            source={require('@/assets/images/buttons/arrow_left.png')}
+            style={styles.iconImage}
+            resizeMode="contain"
+          />
         </TouchableOpacity>
         <TouchableOpacity style={styles.soundButton}>
-          <Text style={styles.soundButtonText}>🔊</Text>
+          <Image
+            source={require('@/assets/images/buttons/volumn.png')}
+            style={styles.iconImage}
+            resizeMode="contain"
+          />
         </TouchableOpacity>
       </View>
 
