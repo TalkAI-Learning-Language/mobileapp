@@ -1,5 +1,5 @@
 import { Tabs } from 'expo-router';
-import { Platform, View, Text } from 'react-native'
+import { Platform, View, Text, Image } from 'react-native'
 
 export default function TabLayout() {
   return (
@@ -20,31 +20,59 @@ export default function TabLayout() {
         name="lessons"
         options={{
           title: 'Lessons',
-          tabBarIcon: ({ color, size }) => (
+          tabBarIcon: ({ color, size, focused }) => (
             <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-              <Text style={{ fontSize: size - 4, color }}>📚</Text>
+              <Text style={{ fontSize: size - 4, color }}>
+                <Image
+                  source={require('@/assets/images/lessons/bottom_book.png')}
+                  resizeMode="contain"
+                  style={{
+                    width: size,
+                    height: size,
+                    tintColor: focused ? '#667EEA' : '#9CA3AF',
+                  }}
+                />                
+              </Text>
             </View>
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="practice"
-        options={{
-          title: 'Practice',
-          tabBarIcon: ({ color, size }) => (
+            ),
+          }}
+          />
+          <Tabs.Screen
+            name="practice"
+            options={{
+              title: 'Practice',
+              tabBarIcon: ({ color, size, focused }) => (
+              <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                <Image
+                  source={require('@/assets/images/lessons/bottom_practice.png')}
+                  resizeMode="contain"
+                  style={{
+                    width: size,
+                    height: size,
+                    tintColor: focused ? '#667EEA' : '#9CA3AF',
+                  }}
+                />
+              </View>
+              ),
+            }}
+          />
+          <Tabs.Screen
+          name="profile"
+          options={{
+            title: 'Profile',
+            tabBarIcon: ({ color, size, focused }) => (
             <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-              <Text style={{ fontSize: size - 4, color }}>🎯</Text>
-            </View>
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="profile"
-        options={{
-          title: 'Profile',
-          tabBarIcon: ({ color, size }) => (
-            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-              <Text style={{ fontSize: size - 4, color }}>👤</Text>
+              <Text style={{ fontSize: size - 4, color }}>
+                <Image
+                  source={require('@/assets/images/lessons/bottom_profile.png')}
+                  resizeMode="contain"
+                  style={{
+                    width: size,
+                    height: size,
+                    tintColor: focused ? '#667EEA' : '#9CA3AF',
+                  }}
+                />
+              </Text>
             </View>
           ),
         }}
