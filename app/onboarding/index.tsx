@@ -26,7 +26,7 @@ export default function WelcomeScreen() {
   };
 
   const handleLogin = () => {
-    router.push('/onboarding/save-progress');
+    router.push('/onboarding/login');
   };
 
   return (
