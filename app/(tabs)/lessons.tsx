@@ -8,6 +8,8 @@ import {
   Image
 } from 'react-native';
 
+import { useRouter } from 'expo-router';
+
 import { LinearGradient } from 'expo-linear-gradient'; // Add this import
 
 const LESSONS = [
@@ -31,8 +33,8 @@ const LESSONS = [
     id: 3, 
     title: 'Speak Freely', 
     icon: '💬', 
-    completed: false, 
-    locked: true,
+    completed: true, 
+    locked: false,
     type: 'speaking'
   },
   { 
@@ -40,7 +42,7 @@ const LESSONS = [
     title: 'Vocabulary', 
     icon: '📚', 
     completed: false, 
-    locked: true,
+    locked: false,
     type: 'vocabulary'
   },
   { 
@@ -48,7 +50,7 @@ const LESSONS = [
     title: 'Grammar', 
     icon: '✏️', 
     completed: false, 
-    locked: true,
+    locked: false,
     type: 'grammar'
   },
   { 
@@ -56,16 +58,34 @@ const LESSONS = [
     title: 'Speak Freely', 
     icon: '💬', 
     completed: false, 
-    locked: true,
+    locked: false,
     type: 'speaking'
   },
 ];
 
 export default function LessonsTab() {
+  const router = useRouter();
+
+  const handleBack = () => {
+    router.back();
+  };
+
+  
+
   const handleLessonPress = (lesson: any) => {
+    console.log("lesson type: ",lesson.type)
     if (!lesson.locked) {
-      // Navigate to lesson
-      console.log('Starting lesson:', lesson.title);
+      // Navigate to specific lesson type
+      // Only allow known lesson types to satisfy the type checker
+      const allowedTypes = ['vocabulary', 'grammar', 'speaking'] as const;
+      type LessonType = typeof allowedTypes[number];
+      if (allowedTypes.includes(lesson.type)) {
+        router.push(`/lessons/${lesson.type}` as
+          | '/lessons/vocabulary'
+          | '/lessons/grammar'
+          | '/lessons/speaking'
+        );
+      }
     }
   };
 
@@ -189,7 +209,7 @@ export default function LessonsTab() {
                   styles.lessonTitle,
                   lesson.locked && styles.lessonTitleLocked
                 ]}>
-                  {lesson.icon} {lesson.title}
+                  {lesson.title}
                 </Text>
               </View>
               
