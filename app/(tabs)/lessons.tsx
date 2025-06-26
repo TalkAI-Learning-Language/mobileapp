@@ -89,6 +89,21 @@ export default function LessonsTab() {
     }
   };
 
+  const handleLessonPlayPress = (lesson : any) => {
+    console.log("lesson type: ",lesson.type)
+    if (!lesson.locked) {
+      // Navigate to specific lesson type
+      // Only allow known lesson types to satisfy the type checker
+      const allowedTypes = ['vocabulary', 'grammar', 'speaking'] as const;
+      if (lesson.type == 'vocabulary')
+        router.push('/lessons/voice')
+      else if (lesson.type == 'grammer')
+        router.push('/lessons/voice')
+      else if (lesson.type == 'grammer')
+        router.push('/lessons/voice')
+    }
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
@@ -219,6 +234,7 @@ export default function LessonsTab() {
                   lesson.locked && styles.playButtonLocked
                 ]}
                 disabled={lesson.locked}
+                onPress={() => handleLessonPlayPress(lesson)}
               >
                 <Text style={[
                   styles.playButtonText,

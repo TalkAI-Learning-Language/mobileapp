@@ -6,6 +6,7 @@ export default function LessonsLayout() {
       <Stack.Screen name="vocabulary" />
       <Stack.Screen name="grammar" />
       <Stack.Screen name="speaking" />
+      <Stack.Screen name="voice" />
     </Stack>
   );
 }
