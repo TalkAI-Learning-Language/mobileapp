@@ -5,6 +5,7 @@ export default function LessonsLayout() {
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="vocabulary" />
       <Stack.Screen name="grammar" />
+      <Stack.Screen name="grammar-voice" />
       <Stack.Screen name="speaking" />
       <Stack.Screen name="voice" />
     </Stack>

@@ -13,28 +13,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 const { width, height } = Dimensions.get('window');
 
-const CONVERSATION = [
-  {
-    id: 1,
-    speaker: 'teacher',
-    message: "Hi! I'll help you learn fast and speak with confidence! 😊 What's your name?",
-    hasAudio: true,
-  },
-  {
-    id: 2,
-    speaker: 'user',
-    message: "My name is Emma Doe! Let's start",
-    hasAudio: false,
-  },
-  {
-    id: 3,
-    speaker: 'teacher',
-    message: "Hi! I'll help you learn fast and speak with confidence! 😊 What's your name?",
-    hasAudio: true,
-  },
-];
-
-export default function GrammarLesson() {
+export default function GrammarVoiceLesson() {
   const [isListening, setIsListening] = useState(false);
   const router = useRouter();
 
@@ -46,7 +25,8 @@ export default function GrammarLesson() {
     setIsListening(!isListening);
   };
 
-  const handleClose = () => {
+  const handleNext = () => {
+    // Navigate to next lesson or back to lessons
     router.back();
   };
 
@@ -78,45 +58,22 @@ export default function GrammarLesson() {
           </View>
         </View>
 
-        {/* Teacher Avatar */}
-        <View style={styles.teacherContainer}>
-          <Image
-            source={require('@/assets/images/teacher/teacher_1.png')}
-            style={styles.teacherAvatar}
-          />
-        </View>
+        {/* Content */}
+        <View style={styles.content}>
+          <Text style={styles.instructionText}>
+            "Practice introducing yourself in English. Record and listen to your own voice."
+          </Text>
 
-        {/* Conversation Messages */}
-        <View style={styles.conversationContainer}>
-          {CONVERSATION.map((item) => (
-            <View key={item.id} style={styles.messageWrapper}>
-              {item.speaker === 'teacher' ? (
-                <View style={styles.teacherMessage}>
-                  <Text style={styles.teacherMessageText}>{item.message}</Text>
-                  {item.hasAudio && (
-                    <View style={styles.messageActions}>
-                      <TouchableOpacity style={styles.actionButton}>
-                        <Image
-                          source={require('@/assets/images/buttons/translate.png')}
-                          style={styles.actionIcon}
-                        />
-                      </TouchableOpacity>
-                      <TouchableOpacity style={styles.actionButton}>
-                        <Image
-                          source={require('@/assets/images/buttons/volumn.png')}
-                          style={styles.actionIcon}
-                        />
-                      </TouchableOpacity>
-                    </View>
-                  )}
+          {/* Voice Visualization */}
+          <View style={styles.voiceVisualization}>
+            <View style={styles.outerCircle}>
+              <View style={styles.middleCircle}>
+                <View style={styles.innerCircle}>
+                  <View style={styles.centerDot} />
                 </View>
-              ) : (
-                <View style={styles.userMessage}>
-                  <Text style={styles.userMessageText}>{item.message}</Text>
-                </View>
-              )}
+              </View>
             </View>
-          ))}
+          </View>
         </View>
 
         {/* Bottom Controls */}
@@ -148,9 +105,9 @@ export default function GrammarLesson() {
             )}
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.sideButton} onPress={handleClose}>
+          <TouchableOpacity style={styles.sideButton} onPress={handleNext}>
             <Image
-              source={require('@/assets/images/buttons/close.png')}
+              source={require('@/assets/images/buttons/next.png')}
               style={styles.sideIcon}
             />
           </TouchableOpacity>
@@ -212,64 +169,56 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
   },
-  teacherContainer: {
-    alignItems: 'center',
-    marginBottom: 30,
-  },
-  teacherAvatar: {
-    width: 80,
-    height: 80,
-    borderRadius: 16,
-  },
-  conversationContainer: {
+  content: {
     flex: 1,
-    paddingHorizontal: 20,
-    paddingBottom: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 40,
   },
-  messageWrapper: {
-    marginBottom: 16,
+  instructionText: {
+    color: '#FFFFFF',
+    fontSize: 18,
+    fontWeight: '400',
+    textAlign: 'center',
+    lineHeight: 26,
+    marginBottom: 80,
+    opacity: 0.9,
   },
-  teacherMessage: {
-    backgroundColor: 'rgba(255, 255, 255, 0.95)',
-    borderRadius: 20,
-    padding: 16,
-    marginRight: 40,
+  voiceVisualization: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 100,
   },
-  teacherMessageText: {
-    fontSize: 16,
-    color: '#333',
-    lineHeight: 24,
-    marginBottom: 8,
-  },
-  messageActions: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    gap: 8,
-  },
-  actionButton: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: '#F3F4F6',
+  outerCircle: {
+    width: 280,
+    height: 280,
+    borderRadius: 140,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  actionIcon: {
-    width: 16,
-    height: 16,
-    tintColor: '#666',
+  middleCircle: {
+    width: 220,
+    height: 220,
+    borderRadius: 110,
+    backgroundColor: 'rgba(255, 255, 255, 0.15)',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  userMessage: {
-    backgroundColor: 'rgba(139, 92, 246, 0.9)',
-    borderRadius: 20,
-    padding: 16,
-    marginLeft: 40,
-    alignSelf: 'flex-end',
+  innerCircle: {
+    width: 160,
+    height: 160,
+    borderRadius: 80,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  userMessageText: {
-    fontSize: 16,
-    color: '#FFFFFF',
-    lineHeight: 24,
+  centerDot: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: '#FFFFFF',
+    opacity: 0.8,
   },
   bottomControls: {
     flexDirection: 'row',
