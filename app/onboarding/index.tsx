@@ -26,7 +26,7 @@ export default function WelcomeScreen() {
   };
 
   const handleLogin = () => {
-    router.push('/onboarding/login');
+    router.push('/auth/login');
   };
 
   return (
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
   },
   nameInput: {
     backgroundColor: '#F8F9FA',
-    borderRadius: 12,
+    borderRadius: 40,
     padding: 16,
     fontSize: 16,
     marginBottom: 20,
@@ -202,5 +202,7 @@ const styles = StyleSheet.create({
   loginLink: {
     color: '#667EEA',
     fontWeight: '600',
+    textDecorationLine: 'underline',
+    textDecorationColor: '#667EEA',
   },
 });

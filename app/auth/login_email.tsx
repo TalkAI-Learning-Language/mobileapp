@@ -15,19 +15,19 @@ import { LinearGradient } from 'expo-linear-gradient'; // Add this import
 
 import { useRouter } from 'expo-router';
 
-export default function SignUp() {
+export default function WelcomeScreen() {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('')
   const router = useRouter();
 
   const handleContinue = () => {
     // if (name.trim()) {
-        router.push('/onboarding/ready');
+      router.push('/onboarding/greeting');
     // }
   };
 
   const handleLogin = () => {
-    router.push('/onboarding/save-progress');
+    router.replace('/(tabs)/lessons');
   };
 
   const handleBack = () => {
@@ -62,7 +62,7 @@ export default function SignUp() {
 
       {/* White Bottom Section */}
       <View style={styles.bottomSection}>
-        <Text style={styles.title}>Save Your Progress</Text>
+        <Text style={styles.title}>Log In</Text>
         <KeyboardAvoidingView
           style={styles.inputContainer}
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -79,7 +79,7 @@ export default function SignUp() {
 
           <TextInput
             style={styles.nameInput}
-            placeholder="Create your password"
+            placeholder="Enter your password"
             placeholderTextColor="#999"
             value={password}
             onChangeText={setPassword}
@@ -89,7 +89,7 @@ export default function SignUp() {
           />
 
           <TouchableOpacity
-            onPress={handleContinue}
+            onPress={handleLogin}
             disabled={!name.trim()}
             style={{ marginBottom: 20 }}
             activeOpacity={0.8}
@@ -103,7 +103,7 @@ export default function SignUp() {
                 !name.trim() && styles.continueButtonDisabled,
               ]}
             >
-              <Text style={styles.continueButtonText}>Register</Text>
+              <Text style={styles.continueButtonText}>Log In</Text>
             </LinearGradient>
           </TouchableOpacity>
         </KeyboardAvoidingView>

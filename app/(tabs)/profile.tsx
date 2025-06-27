@@ -11,6 +11,8 @@ import {
   Modal,
   TextInput
 } from 'react-native';
+
+import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const TEACHERS = [
@@ -51,73 +53,22 @@ const LANGUAGES = [
   { id: 'english', name: 'English', flag: '🇺🇸' },
   { id: 'german', name: 'German', flag: '🇩🇪' },
   { id: 'mandarin', name: 'Mandarin', flag: '🇨🇳' },
+  { id: 'japanese', name: 'Japanese', flag: '🇯🇵' },
+  { id: 'italian', name: 'Italian', flag: '🇮🇹' },
+  { id: 'korean', name: 'Korean', flag: '🇰🇷' },
 ];
 
 const CANCELLATION_REASONS = [
-  { id: 'expensive', text: 'Too expensive', icon: '💰' },
-  { id: 'not_using', text: 'I like it, but just not using it', icon: '👍' },
-  { id: 'break', text: 'Taking a break', icon: '☕' },
-  { id: 'speech_recognition', text: "Speech recognition isn't accurate", icon: '🎤' },
-  { id: 'other', text: 'Other', icon: '💬' },
+  { id: 'expensive', text: 'Too expensive', image: require('@/assets/images/buttons/wallet.png') },
+  { id: 'not_using', text: 'I like it, but just not using it', image: require('@/assets/images/buttons/like.png') },
+  { id: 'break', text: 'Taking a break', image: require('@/assets/images/buttons/coffee.png') },
+  { id: 'speech_recognition', text: "Speech recognition isn't accurate", image: require('@/assets/images/buttons/dislike.png') },
+  { id: 'other', text: 'Other', image: require('@/assets/images/buttons/other.png') },
 ];
 
-const SETTINGS_ITEMS = [
-  {
-    id: 'teacher',
-    title: 'Change Teacher',
-    value: 'Sarah Miller',
-    icon: '👩‍🏫',
-    hasArrow: true,
-  },
-  {
-    id: 'language',
-    title: 'App Language',
-    value: 'English',
-    icon: '🇺🇸',
-    hasArrow: true,
-  },
-  {
-    id: 'notifications',
-    title: 'Notifications',
-    subtitle: 'Set App Reminders',
-    hasSwitch: true,
-    switchValue: true,
-  },
-  {
-    id: 'membership',
-    title: 'Manage Membership',
-    value: 'Premium',
-    hasArrow: true,
-  },
-  {
-    id: 'minutes',
-    title: 'Buy Extra Minutes',
-    hasArrow: true,
-  },
-  {
-    id: 'contact',
-    title: 'Contact',
-    hasArrow: true,
-  },
-  {
-    id: 'privacy',
-    title: 'Privacy Policy',
-    hasArrow: true,
-  },
-  {
-    id: 'terms',
-    title: 'Terms of Use',
-    hasArrow: true,
-  },
-  {
-    id: 'logout',
-    title: 'Log Out',
-    icon: '🔄',
-    isLogout: true,
-  },
-];
 
 export default function ProfileTab() {
+  const router = useRouter();
   const [showTeacherModal, setShowTeacherModal] = useState(false);
   const [showLanguageModal, setShowLanguageModal] = useState(false);
   const [showMembershipModal, setShowMembershipModal] = useState(false);
@@ -127,6 +78,7 @@ export default function ProfileTab() {
   const [selectedCancellationReason, setSelectedCancellationReason] = useState('');
   const [cancellationText, setCancellationText] = useState('');
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const handleSettingPress = (itemId: string) => {
     switch (itemId) {
@@ -139,10 +91,17 @@ export default function ProfileTab() {
       case 'membership':
         setShowMembershipModal(true);
         break;
+      case 'logout':
+        setShowLogoutModal(true);
+        break;
       default:
         break;
     }
   };
+
+  const handleLogoutPress = () => {
+    router.push('/onboarding')
+  }
 
   const handleTeacherSelect = (teacherId: string) => {
     setSelectedTeacher(teacherId);
@@ -179,70 +138,137 @@ export default function ProfileTab() {
         {/* Settings Section */}
         <View style={styles.settingsSection}>
           <Text style={styles.sectionTitle}>Settings</Text>
-          
-          {SETTINGS_ITEMS.map((item, index) => (
-            <TouchableOpacity 
-              key={item.id} 
-              style={[
-                styles.settingItem,
-                item.isLogout && styles.logoutItem
-              ]}
-              onPress={() => handleSettingPress(item.id)}
-            >
-              <View style={styles.settingLeft}>
-                {item.id === 'teacher' && selectedTeacherData ? (
-                  <Image
-                    source={selectedTeacherData.image}
-                    style={styles.teacherImage}
-                  />
-                ) : item.id === 'language' && selectedLanguageData ? (
-                  <View style={styles.settingIconContainer}>
-                    <Text style={styles.flagIcon}>{selectedLanguageData.flag}</Text>
-                  </View>
-                ) : item.icon && (
-                  <View style={styles.settingIconContainer}>
-                    <Text style={styles.settingIcon}>{item.icon}</Text>
-                  </View>
-                )}
-                
-                <View style={styles.settingTextContainer}>
-                  <Text style={[
-                    styles.settingTitle,
-                    item.isLogout && styles.logoutTitle
-                  ]}>
-                    {item.title}
-                  </Text>
-                  {item.subtitle && (
-                    <Text style={styles.settingSubtitle}>{item.subtitle}</Text>
-                  )}
-                </View>
-              </View>
 
-              <View style={styles.settingRight}>
-                {item.hasSwitch ? (
-                  <Switch
-                    value={notificationsEnabled}
-                    onValueChange={setNotificationsEnabled}
-                    trackColor={{ false: '#E5E7EB', true: '#667EEA' }}
-                    thumbColor={'#FFFFFF'}
-                  />
-                ) : item.value ? (
-                  <View style={styles.valueContainer}>
-                    <Text style={styles.settingValue}>
-                      {item.id === 'teacher' && selectedTeacherData ? selectedTeacherData.name :
-                       item.id === 'language' && selectedLanguageData ? selectedLanguageData.name :
-                       item.value}
-                    </Text>
-                    {item.hasArrow && (
-                      <Text style={styles.arrow}>›</Text>
-                    )}
-                  </View>
-                ) : item.hasArrow ? (
-                  <Text style={styles.arrow}>›</Text>
-                ) : null}
-              </View>
-            </TouchableOpacity>
-          ))}
+          {/* Change Teacher */}
+          <TouchableOpacity
+            style={styles.settingItem}
+            onPress={() => handleSettingPress('teacher')}
+            activeOpacity={0.7}
+          >
+            <Text style={styles.settingTitle}>Change Teacher</Text>
+            <View style={styles.pillRight}>
+              <Image source={selectedTeacherData?.image} style={styles.pillAvatar} />
+              <Text style={styles.pillText}>{selectedTeacherData?.name}</Text>
+              <Image
+                source={require('@/assets/images/buttons/arrow_right.png')}
+                style={styles.logoutIcon}
+              />
+            </View>
+          </TouchableOpacity>
+
+          {/* App Language */}
+          <TouchableOpacity
+            style={styles.settingItem}
+            onPress={() => handleSettingPress('language')}
+            activeOpacity={0.7}
+          >
+            <Text style={styles.settingTitle}>App Language</Text>
+            <View style={styles.pillRight}>
+              <Text style={styles.pillFlag}>{selectedLanguageData?.flag}</Text>
+              <Text style={styles.pillText}>{selectedLanguageData?.name}</Text>
+              <Image
+                source={require('@/assets/images/buttons/arrow_right.png')}
+                style={styles.logoutIcon}
+              />
+            </View>
+          </TouchableOpacity>
+
+          {/* Notifications */}
+          <View style={styles.settingItem}>
+            <View>
+              <Text style={styles.settingTitle}>Notifications</Text>
+              <Text style={styles.settingSubtitle}>Set App Reminders</Text>
+            </View>
+            <Switch
+              value={notificationsEnabled}
+              onValueChange={setNotificationsEnabled}
+              trackColor={{ false: '#E5E7EB', true: '#667EEA' }}
+              thumbColor={'#FFFFFF'}
+            />
+          </View>
+
+          {/* Manage Membership */}
+          <TouchableOpacity
+            style={styles.settingItem}
+            onPress={() => handleSettingPress('membership')}
+            activeOpacity={0.7}
+          >
+            <Text style={styles.settingTitle}>Manage Membership</Text>
+            <View style={styles.pillRight}>
+              <Text style={styles.pillText}>Premium</Text>
+              <Image
+                source={require('@/assets/images/buttons/arrow_right.png')}
+                style={styles.logoutIcon}
+              />
+            </View>
+          </TouchableOpacity>
+
+          {/* Buy Extra Minutes */}
+          <TouchableOpacity
+            style={styles.settingItem}
+            onPress={() => handleSettingPress('minutes')}
+            activeOpacity={0.7}
+          >
+            <Text style={styles.settingTitle}>Buy Extra Minutes</Text>
+            <Image
+              source={require('@/assets/images/buttons/arrow_right.png')}
+              style={styles.logoutIcon}
+            />
+          </TouchableOpacity>
+
+          {/* Contact */}
+          <TouchableOpacity
+            style={styles.settingItem}
+            onPress={() => handleSettingPress('contact')}
+            activeOpacity={0.7}
+          >
+            <Text style={styles.settingTitle}>Contact</Text>
+            <Image
+              source={require('@/assets/images/buttons/arrow_right.png')}
+              style={styles.logoutIcon}
+            />
+          </TouchableOpacity>
+
+          {/* Privacy Policy */}
+          <TouchableOpacity
+            style={styles.settingItem}
+            onPress={() => handleSettingPress('privacy')}
+            activeOpacity={0.7}
+          >
+            <Text style={styles.settingTitle}>Privacy Policy</Text>
+            <Image
+              source={require('@/assets/images/buttons/arrow_right.png')}
+              style={styles.logoutIcon}
+            />
+          </TouchableOpacity>
+
+          {/* Terms of Use */}
+          <TouchableOpacity
+            style={styles.settingItem}
+            onPress={() => handleSettingPress('terms')}
+            activeOpacity={0.7}
+          >
+            <Text style={styles.settingTitle}>Terms of Use</Text>
+            <Image
+              source={require('@/assets/images/buttons/arrow_right.png')}
+              style={styles.logoutIcon}
+            />
+          </TouchableOpacity>
+        </View>
+
+        {/* Log Out at the bottom */}
+        <View style={{ marginTop: 32, marginBottom: 24, marginHorizontal: 18 }}>
+          <TouchableOpacity
+            style={styles.settingItem}
+            onPress={() => handleSettingPress('logout')}
+            activeOpacity={0.7}
+          >
+            <Text style={styles.settingTitle}>Log Out</Text>
+            <Image
+              source={require('@/assets/images/buttons/logout.png')}
+              style={styles.logoutIcon}
+            />
+          </TouchableOpacity>
         </View>
       </ScrollView>
 
@@ -253,7 +279,7 @@ export default function ProfileTab() {
         animationType="slide"
         onRequestClose={() => setShowTeacherModal(false)}
       >
-        <View style={styles.modalOverlay}>
+        <View style={styles.modalOverlayBottom}>
           <View style={styles.bottomSheet}>
             <View style={styles.modalHeader}>
               <Text style={styles.modalTitle}>Change Teacher</Text>
@@ -319,7 +345,7 @@ export default function ProfileTab() {
         animationType="slide"
         onRequestClose={() => setShowLanguageModal(false)}
       >
-        <View style={styles.modalOverlay}>
+        <View style={styles.modalOverlayBottom}>
           <View style={styles.bottomSheet}>
             <View style={styles.modalHeader}>
               <Text style={styles.modalTitle}>App Language</Text>
@@ -367,7 +393,7 @@ export default function ProfileTab() {
         animationType="slide"
         onRequestClose={() => setShowMembershipModal(false)}
       >
-        <View style={styles.modalOverlay}>
+        <View style={styles.modalOverlayBottom}>
           <View style={styles.bottomSheet}>
             <View style={styles.modalHeader}>
               <Text style={styles.modalTitle}>Manage Membership</Text>
@@ -447,7 +473,7 @@ export default function ProfileTab() {
                   ]}
                   onPress={() => setSelectedCancellationReason(reason.id)}
                 >
-                  <Text style={styles.reasonIcon}>{reason.icon}</Text>
+                  <Image source={reason.image} style={styles.reasonImage} />
                   <Text style={styles.reasonText}>{reason.text}</Text>
                 </TouchableOpacity>
               ))}
@@ -486,6 +512,44 @@ export default function ProfileTab() {
           </SafeAreaView>
         </View>
       </Modal>
+
+      {/* Logout Confirm Modal */}
+      <Modal
+        visible={showLogoutModal}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setShowLogoutModal(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.logoutDialog}>
+            <Text style={styles.logoutDialogTitle}>Log Out</Text>
+            <Text style={styles.logoutDialogText}>Are you sure you want to log out?</Text>
+            <View style={styles.logoutDialogActions}>
+              <TouchableOpacity
+                style={styles.logoutDialogButton}
+                onPress={() => setShowLogoutModal(false)}
+                activeOpacity={0.7}
+              >
+                <LinearGradient
+                  colors={['#667EEA', '#A685FA']}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={styles.logoutDialogButtonGradient}
+                >
+                  <Text style={styles.logoutDialogButtonNoText}>No</Text>
+                </LinearGradient>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.logoutDialogButton, styles.logoutDialogButtonYes]}
+                onPress={()=>handleLogoutPress()}
+                activeOpacity={0.7}
+              >
+                <Text style={styles.logoutDialogButtonYesText}>Yes</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -514,7 +578,7 @@ const styles = StyleSheet.create({
     color: '#9CA3AF',
   },
   settingsSection: {
-    paddingHorizontal: 24,
+    paddingHorizontal: 18,
   },
   sectionTitle: {
     fontSize: 18,
@@ -527,7 +591,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: '#FFFFFF',
-    borderRadius: 12,
+    borderRadius: 40,
     padding: 16,
     marginBottom: 8,
     shadowColor: '#000',
@@ -536,11 +600,8 @@ const styles = StyleSheet.create({
       height: 1,
     },
     shadowOpacity: 0.05,
-    shadowRadius: 2,
-    elevation: 1,
-  },
-  logoutItem: {
-    marginTop: 24,
+    shadowRadius: 5,
+    elevation: 2,
   },
   settingLeft: {
     flexDirection: 'row',
@@ -576,9 +637,6 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: '#374151',
   },
-  logoutTitle: {
-    color: '#EF4444',
-  },
   settingSubtitle: {
     fontSize: 14,
     color: '#9CA3AF',
@@ -601,11 +659,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#D1D5DB',
     fontWeight: '300',
-  },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'flex-end',
   },
   bottomSheet: {
     backgroundColor: '#FFFFFF',
@@ -638,6 +691,7 @@ const styles = StyleSheet.create({
   gradientButton: {
     paddingVertical: 16,
     alignItems: 'center',
+    borderRadius: 40
   },
   modalButtonText: {
     color: '#FFFFFF',
@@ -810,16 +864,18 @@ const styles = StyleSheet.create({
     paddingTop: 32,
   },
   cancellationQuestion: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: '600',
     color: '#111827',
     marginBottom: 32,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   reasonOption: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#F8F9FA',
-    borderRadius: 12,
+    borderRadius: 40,
     padding: 20,
     marginBottom: 16,
     borderWidth: 2,
@@ -859,5 +915,143 @@ const styles = StyleSheet.create({
   },
   disabledButton: {
     opacity: 0.5,
+  },
+  pillRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F3F4F6',
+    borderRadius: 20,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    minHeight: 40,
+    minWidth: 80,
+    marginLeft: 8,
+    gap: 8,
+  },
+  pillAvatar: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    marginRight: 6,
+  },
+  pillFlag: {
+    fontSize: 22,
+    marginRight: 6,
+  },
+  pillText: {
+    fontSize: 15,
+    color: '#374151',
+    fontWeight: '500',
+    marginRight: 2,
+  },
+  logoutItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 40,
+    padding: 16,
+    marginHorizontal: 24,
+    marginTop: 0,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 5,
+    elevation: 2,
+  },
+  logoutTitle: {
+    color: '#EF4444',
+    fontSize: 16,
+    fontWeight: '500',
+    marginRight: 8,
+  },
+  logoutIcon: {
+    width: 28,
+    height: 28,
+    tintColor: '#000000',
+  },
+  reasonImage: {
+    width: 32,
+    height: 32,
+    marginRight: 16,
+    resizeMode: 'contain',
+  },
+  modalOverlayBottom: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'flex-end',
+  },
+  modalOverlayCenter: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.2)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 28,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.2)',
+    justifyContent: 'center',
+    padding: 28,
+    alignItems: 'center',
+  },
+  logoutDialog: {
+    width: 320,
+    backgroundColor: '#fff',
+    borderRadius: 24,
+    padding: 20,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    elevation: 5,
+  },
+  logoutDialogTitle: {
+    fontSize: 22,
+    fontWeight: '600',
+    color: '#222',
+    marginBottom: 12,
+  },
+  logoutDialogText: {
+    fontSize: 16,
+    color: '#444',
+    marginBottom: 28,
+    textAlign: 'center',
+  },
+  logoutDialogActions: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 16,
+  },
+  logoutDialogButton: {
+    flex: 1,
+    borderRadius: 24,
+    marginHorizontal: 4,
+  },
+  logoutDialogButtonNo: {
+    backgroundColor: 'linear-gradient(90deg, #667EEA 0%, #764BA2 100%)', // fallback for iOS, see below for gradient
+    // backgroundColor: '#667EEA', // fallback for Android
+  },
+  logoutDialogButtonGradient: {
+    borderRadius: 24,
+    width: '100%',
+    alignItems: 'center',
+    paddingVertical: 14,
+  },
+  logoutDialogButtonNoText: {
+    color: '#fff',
+    fontWeight: '600',
+    fontSize: 16,
+  },
+  logoutDialogButtonYes: {
+    backgroundColor: '#F3F4F6',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  logoutDialogButtonYesText: {
+    color: '#222',
+    fontWeight: '600',
+    fontSize: 16,
   },
 });
