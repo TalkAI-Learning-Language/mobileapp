@@ -13,6 +13,8 @@ import {
 } from 'react-native';
 import { useRouter } from 'expo-router';
 
+import AnimatedRecordButton from '@/components/ui/AnimatedRecordButton';
+
 import { LinearGradient } from 'expo-linear-gradient'; // Add this import
 
 const VOCABULARY_WORDS = [
@@ -29,6 +31,7 @@ export default function VocabularyLesson() {
   const [showNextModal, setShowNextModal] = useState(false);
   const [userInput, setUserInput] = useState('');
   const [nextPracticeInput, setNextPracticeInput] = useState('');
+  const [isListening, setIsListening] = useState(false);
   const router = useRouter();
 
   const currentWord = VOCABULARY_WORDS[currentWordIndex];
@@ -51,6 +54,10 @@ export default function VocabularyLesson() {
     }
   };
 
+  const handleMicPress = () => {
+    setIsListening(!isListening);
+  };
+
   const handleSubmitNext = () => {
     setShowNextModal(false);
     setNextPracticeInput('');
@@ -64,13 +71,17 @@ export default function VocabularyLesson() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <LinearGradient
+      colors={['#1E3A8A', '#3B82F6', '#8B5CF6', '#A855F7']}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={handleBack} style={styles.backButton}>
+        <TouchableOpacity onPress={handleBack} style={styles.headerButton}>
           <Image
             source={require('@/assets/images/buttons/arrow_left.png')}
-            style={styles.iconImage}
+            style={styles.headerIcon}
             resizeMode="contain"
           />
         </TouchableOpacity>
@@ -152,9 +163,11 @@ export default function VocabularyLesson() {
               <Image source={require('@/assets/images/buttons/keyboard.png')} style={styles.sideIcon} />
             </TouchableOpacity>
             
-            <TouchableOpacity style={styles.micButton}>
-              <Image source={require('@/assets/images/buttons/microphone.png')} style={styles.micIcon} />
-            </TouchableOpacity>
+            
+            <AnimatedRecordButton
+              isListening={isListening}
+              onPress={handleMicPress}
+            />
             
             <TouchableOpacity 
               style={styles.sideButton}
@@ -232,7 +245,7 @@ export default function VocabularyLesson() {
           </View>
         </TouchableWithoutFeedback>
       </Modal>
-    </SafeAreaView>
+    </LinearGradient>
   );
 }
 
@@ -607,5 +620,18 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: '600',
+  },
+  headerButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  headerIcon: {
+    width: 20,
+    height: 20,
+    tintColor: '#FFFFFF',
   },
 });

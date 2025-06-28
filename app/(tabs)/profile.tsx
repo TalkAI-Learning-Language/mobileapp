@@ -127,7 +127,11 @@ export default function ProfileTab() {
   const selectedLanguageData = LANGUAGES.find(l => l.id === selectedLanguage);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <LinearGradient
+      colors={['#1E3A8A', '#3B82F6', '#8B5CF6', '#A855F7']}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={styles.container}>
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Profile Header */}
         <View style={styles.profileHeader}>
@@ -550,7 +554,7 @@ export default function ProfileTab() {
           </View>
         </View>
       </Modal>
-    </SafeAreaView>
+    </LinearGradient>
   );
 }
 

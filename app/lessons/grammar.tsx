@@ -11,6 +11,8 @@ import {
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 
+import AnimatedRecordButton from '@/components/ui/AnimatedRecordButton';
+
 const { width, height } = Dimensions.get('window');
 
 const CONVERSATION = [
@@ -79,11 +81,17 @@ export default function GrammarLesson() {
         </View>
 
         {/* Teacher Avatar */}
-        <View style={styles.teacherContainer}>
+        <View style={styles.teacherCard}>
           <Image
             source={require('@/assets/images/teacher/teacher_1.png')}
             style={styles.teacherAvatar}
           />
+          <View style={styles.teacherInfo}>
+            <Text style={styles.teacherName}>Mary Carter</Text>
+            <Text style={styles.teacherSubtitle}>
+              Listen, repeat and write these words
+            </Text>
+          </View>
         </View>
 
         {/* Conversation Messages */}
@@ -128,25 +136,10 @@ export default function GrammarLesson() {
             />
           </TouchableOpacity>
 
-          <TouchableOpacity
-            style={[styles.micButton, isListening && styles.micButtonActive]}
+          <AnimatedRecordButton
+            isListening={isListening}
             onPress={handleMicPress}
-            activeOpacity={0.8}
-          >
-            <View style={styles.micButtonInner}>
-              <Image
-                source={require('@/assets/images/buttons/microphone.png')}
-                style={styles.micIcon}
-              />
-            </View>
-            {isListening && (
-              <>
-                <View style={[styles.pulseRing, styles.pulseRing1]} />
-                <View style={[styles.pulseRing, styles.pulseRing2]} />
-                <View style={[styles.pulseRing, styles.pulseRing3]} />
-              </>
-            )}
-          </TouchableOpacity>
+          />
 
           <TouchableOpacity style={styles.sideButton} onPress={handleClose}>
             <Image
@@ -215,11 +208,6 @@ const styles = StyleSheet.create({
   teacherContainer: {
     alignItems: 'center',
     marginBottom: 30,
-  },
-  teacherAvatar: {
-    width: 80,
-    height: 80,
-    borderRadius: 16,
   },
   conversationContainer: {
     flex: 1,
@@ -334,5 +322,37 @@ const styles = StyleSheet.create({
   pulseRing3: {
     width: 140,
     height: 140,
+  },
+  teacherCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F7FAFC',
+    borderRadius: 16,
+    padding: 16,
+    margin: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.06,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  teacherAvatar: {
+    width: 70,
+    height: 70,
+    borderRadius: 12,
+    marginRight: 16,
+  },
+  teacherInfo: {
+    flex: 1,
+  },
+  teacherName: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#222B45',
+    marginBottom: 4,
+  },
+  teacherSubtitle: {
+    fontSize: 14,
+    color: '#6B7280',
   },
 });

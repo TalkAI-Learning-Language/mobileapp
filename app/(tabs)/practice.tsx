@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { useRouter } from 'expo-router';
 
+import AnimatedRecordButton from '@/components/ui/AnimatedRecordButton';
 import { LinearGradient } from 'expo-linear-gradient'; // Add this import
 
 const CONVERSATION = [
@@ -34,6 +35,7 @@ export default function PracticeTab() {
   const [showResultsPage, setShowResultsPage] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState('Pro');
   const [showFullVersion, setShowFullVersion] = useState(false);
+  const [isListening, setIsListening] = useState(false);
 
   const router = useRouter();
 
@@ -46,6 +48,10 @@ export default function PracticeTab() {
       setShowCompletionModal(true);
     }
   };
+
+  const handleMicPress = () => {
+    setIsListening(!isListening);
+  }
 
   const handleFinishLesson = () => {
     setShowCompletionModal(false);
@@ -217,11 +223,19 @@ export default function PracticeTab() {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <LinearGradient
+      colors={['#1E3A8A', '#3B82F6', '#8B5CF6', '#A855F7']}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={handleBack} style={styles.backButton}>
-          <Image source={require('@/assets/images/buttons/arrow_left.png')} style={styles.sideIcon} />
+        <TouchableOpacity onPress={handleBack} style={styles.headerButton}>
+          <Image
+            source={require('@/assets/images/buttons/arrow_left.png')}
+            style={styles.headerIcon}
+            resizeMode="contain"
+          />
         </TouchableOpacity>
         <View>
           <Text style={styles.headerTitle}>Listening Practice</Text>
@@ -312,7 +326,10 @@ export default function PracticeTab() {
           <Image source={require('@/assets/images/buttons/keyboard.png')} style={styles.sideIcon} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.micButton}>
-          <Image source={require('@/assets/images/buttons/microphone.png')} style={styles.micIcon} />
+          <AnimatedRecordButton
+            isListening={isListening}
+            onPress={handleMicPress}
+          />
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.actionButton, selectedAnswer && styles.actionButtonEnabled]}
@@ -419,7 +436,7 @@ export default function PracticeTab() {
           </LinearGradient>
         </View>
       </Modal>
-    </SafeAreaView>
+    </LinearGradient>
   );
 }
 
@@ -457,11 +474,11 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#333',
+    color: 'white',
   },
   headerSubtitle: {
     fontSize: 14,
-    color: '#666',
+    color: 'white',
   },
   content: {
     flex: 1,
@@ -629,6 +646,7 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 28,
+    marginTop: 20,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
@@ -647,9 +665,10 @@ const styles = StyleSheet.create({
     tintColor: '#7B6EF6',
   },
   micButton: {
-    width: 80,
-    height: 80,
+    width: 70,
+    height: 70,
     borderRadius: 40,
+    marginHorizontal: 20,
     backgroundColor: '#7B6EF6',
     alignItems: 'center',
     justifyContent: 'center',
@@ -657,6 +676,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.18,
     shadowRadius: 16,
+    marginTop: 20,
     elevation: 4,
   },
   micIcon: {
@@ -1233,5 +1253,18 @@ const styles = StyleSheet.create({
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  headerButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  headerIcon: {
+    width: 20,
+    height: 20,
+    tintColor: '#FFFFFF',
   },
 });

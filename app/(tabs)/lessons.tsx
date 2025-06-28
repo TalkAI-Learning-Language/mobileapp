@@ -12,7 +12,7 @@ import { useRouter } from 'expo-router';
 
 import { LinearGradient } from 'expo-linear-gradient'; // Add this import
 
-const LESSONS = [
+const LESSONS_UNIT_1 = [
   { 
     id: 1, 
     title: 'Vocabulary', 
@@ -111,6 +111,49 @@ const LESSONS = [
   },
 ];
 
+const LESSONS_UNIT_2 = [
+  { 
+    id: 1, 
+    title: 'Vocabulary', 
+    icon: '📚', 
+    completed: false, 
+    locked: true,
+    type: 'vocabulary'
+  },
+  { 
+    id: 2, 
+    title: 'Grammar', 
+    icon: '✏️', 
+    completed: true, 
+    locked: true,
+    type: 'grammar'
+  },
+  { 
+    id: 3, 
+    title: 'Speak Freely', 
+    icon: '💬', 
+    completed: false, 
+    locked: true,
+    type: 'speaking'
+  },
+  { 
+    id: 4, 
+    title: 'Vocabulary', 
+    icon: '📚', 
+    completed: false, 
+    locked: true,
+    type: 'vocabulary'
+  },
+  { 
+    id: 5, 
+    title: 'Grammar', 
+    icon: '✏️', 
+    completed: false, 
+    locked: true,
+    type: 'grammar'
+  }
+];
+
 export default function LessonsTab() {
   const router = useRouter();
 
@@ -153,7 +196,11 @@ export default function LessonsTab() {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <LinearGradient
+      colors={['#1E3A8A', '#3B82F6', '#8B5CF6', '#A855F7']}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={styles.container}>
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Header */}
         <View style={styles.header}>
@@ -244,8 +291,81 @@ export default function LessonsTab() {
 
         {/* Lessons List */}
         <View style={styles.lessonsContainer}>
-          {LESSONS.map((lesson, index) => (
-            <View style={{ flexDirection: "row"}} key={lesson.id}>
+          {LESSONS_UNIT_1.map((lesson, index) => (
+            <View style={{ flexDirection: "row" }} key={lesson.id}>
+              <TouchableOpacity
+                style={[
+                  styles.lessonItemCheck,
+                  lesson.locked && styles.lessonItemLocked
+                ]}
+                >
+                <View style={[
+                  styles.lessonIconContainer,
+                  lesson.completed && styles.lessonIconCompleted,
+                  lesson.locked && styles.lessonIconLocked
+                ]}>
+                  {lesson.completed ? (
+                    <Text style={styles.completedIcon}>✓</Text>
+                  ) : lesson.locked ? (
+                    <Text style={styles.lockedIcon}>🔒</Text>
+                  ) : (
+                    <Text style={styles.lessonIcon}>{lesson.icon}</Text>
+                  )}
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                key={lesson.id}
+                style={[
+                  styles.lessonItem,
+                  lesson.locked && styles.lessonItemLocked
+                ]}
+                onPress={() => handleLessonPress(lesson)}
+                disabled={lesson.locked}
+              >
+                <View style={styles.lessonLeft}>
+                  
+                  <Text style={[
+                    styles.lessonTitle,
+                    lesson.locked && styles.lessonTitleLocked
+                  ]}>
+                    {lesson.icon} {lesson.title}
+                  </Text>
+                </View>
+                
+                <TouchableOpacity 
+                  style={[
+                    styles.playButton,
+                    lesson.locked && styles.playButtonLocked
+                  ]}
+                  disabled={lesson.locked}
+                  onPress={() => handleLessonPlayPress(lesson)}
+                >
+                  <Text style={[
+                    styles.playButtonText,
+                    lesson.locked && styles.playButtonTextLocked
+                  ]}>
+                    Play
+                  </Text>
+                  <Image
+                    source={require('@/assets/images/lessons/play.png')}
+                    style={styles.iconImage}
+                    resizeMode="contain"
+                  />
+                </TouchableOpacity>
+              </TouchableOpacity>
+            </View>
+          ))}
+        </View>
+        {/* Unit Section */}
+        <View style={styles.unitSection}>
+          <Text style={styles.unitTitle}>Unit 2</Text>
+          <Text style={styles.unitSubtitle}>Free Conversation</Text>
+        </View>
+
+        {/* Lessons List */}
+        <View style={styles.lessonsContainer}>
+          {LESSONS_UNIT_2.map((lesson, index) => (
+            <View style={{ flexDirection: "row" }} key={lesson.id}>
               <TouchableOpacity
                 style={[
                   styles.lessonItemCheck,
@@ -310,7 +430,7 @@ export default function LessonsTab() {
           ))}
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </LinearGradient>
   );
 }
 
@@ -335,7 +455,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: '#111827',
+    color: 'white',
   },
   streakContainer: {
     flexDirection: 'row',
@@ -416,17 +536,17 @@ const styles = StyleSheet.create({
   },
   unitTitle: {
     fontSize: 16,
-    color: '#666',
+    color: 'white',
     marginBottom: 4,
   },
   unitSubtitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#333',
+    color: 'white',
   },
   lessonsContainer: {
     gap: 16,
-    paddingBottom: 100,
+    paddingBottom: 50,
   },
   lessonItem: {
     backgroundColor: '#FFFFFF',
@@ -440,7 +560,7 @@ const styles = StyleSheet.create({
       width: 0,
       height: 1,
     },
-    width: 260,
+    width: '73%',
     shadowOpacity: 0.05,
     shadowRadius: 4,
     elevation: 2,

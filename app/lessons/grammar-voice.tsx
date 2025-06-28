@@ -11,6 +11,9 @@ import {
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 
+import AnimatedRecordButton from '@/components/ui/AnimatedRecordButton';
+import PracticeVoiceAnimation from '@/components/ui/PracticeVoiceAnimation';
+
 const { width, height } = Dimensions.get('window');
 
 export default function GrammarVoiceLesson() {
@@ -65,15 +68,7 @@ export default function GrammarVoiceLesson() {
           </Text>
 
           {/* Voice Visualization */}
-          <View style={styles.voiceVisualization}>
-            <View style={styles.outerCircle}>
-              <View style={styles.middleCircle}>
-                <View style={styles.innerCircle}>
-                  <View style={styles.centerDot} />
-                </View>
-              </View>
-            </View>
-          </View>
+          <PracticeVoiceAnimation />
         </View>
 
         {/* Bottom Controls */}
@@ -85,25 +80,10 @@ export default function GrammarVoiceLesson() {
             />
           </TouchableOpacity>
 
-          <TouchableOpacity
-            style={[styles.micButton, isListening && styles.micButtonActive]}
+          <AnimatedRecordButton
+            isListening={isListening}
             onPress={handleMicPress}
-            activeOpacity={0.8}
-          >
-            <View style={styles.micButtonInner}>
-              <Image
-                source={require('@/assets/images/buttons/microphone.png')}
-                style={styles.micIcon}
-              />
-            </View>
-            {isListening && (
-              <>
-                <View style={[styles.pulseRing, styles.pulseRing1]} />
-                <View style={[styles.pulseRing, styles.pulseRing2]} />
-                <View style={[styles.pulseRing, styles.pulseRing3]} />
-              </>
-            )}
-          </TouchableOpacity>
+          />
 
           <TouchableOpacity style={styles.sideButton} onPress={handleNext}>
             <Image

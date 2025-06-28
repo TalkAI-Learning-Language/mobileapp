@@ -8,10 +8,24 @@ import {
   Image,
   Dimensions
 } from 'react-native';
+
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withRepeat,
+  withTiming,
+  Easing,
+  cancelAnimation,
+} from 'react-native-reanimated';
+
+import AnimatedRecordButton from '@/components/ui/AnimatedRecordButton';
+import MagicalEffectAnimation from '@/components/ui/MagicalEffectAnimation';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const { width, height } = Dimensions.get('window');
+
+
 
 export default function Voice() {
   const [isListening, setIsListening] = useState(false);
@@ -46,9 +60,7 @@ export default function Voice() {
 
           
           <View style={styles.content}>
-            <Image
-                source={require('@/assets/images/lessons/effect.png')}
-              />
+            <MagicalEffectAnimation />
           </View>
 
           
@@ -63,35 +75,19 @@ export default function Voice() {
             />
           </TouchableOpacity>
 
-          <TouchableOpacity
-            style={[styles.micButton, isListening && styles.micButtonActive]}
-            onPress={handleMicPress}
-            activeOpacity={0.8}
-          >
-            {/* Voice Visualization */}
-            <View style={styles.voiceVisualization}>
-              <View style={styles.outerCircle}>
-                <View style={styles.middleCircle}>
-                  <View style={styles.innerCircle}>
-                    <View style={styles.micButtonInner}>
-                      <Image
-                        source={require('@/assets/images/buttons/microphone.png')}
-                        style={styles.micIcon}
-                      />
-                    </View>
-                  </View>
-                </View>
-              </View>
-            </View>
-           
-            {isListening && (
+          <View >
+            <AnimatedRecordButton
+              isListening={isListening}
+              onPress={handleMicPress}
+            />
+          </View>
+          {/* {isListening && (
               <>
                 <View style={[styles.pulseRing, styles.pulseRing1]} />
                 <View style={[styles.pulseRing, styles.pulseRing2]} />
                 <View style={[styles.pulseRing, styles.pulseRing3]} />
               </>
-            )}
-          </TouchableOpacity>
+            )} */}
 
           <TouchableOpacity style={styles.sideButton} onPress={handleClose}>
             <Image
@@ -285,14 +281,17 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(139, 92, 246, 0.4)',
   },
   pulseRing1: {
+    borderRadius: 100,
     width: 100,
     height: 100,
   },
   pulseRing2: {
+    borderRadius: 100,
     width: 120,
     height: 120,
   },
   pulseRing3: {
+    borderRadius: 100,
     width: 140,
     height: 140,
   },
