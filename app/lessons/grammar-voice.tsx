@@ -35,7 +35,7 @@ export default function GrammarVoiceLesson() {
 
   return (
     <LinearGradient
-      colors={['#1E3A8A', '#3B82F6', '#8B5CF6', '#A855F7']}
+      colors={['#23244D', '#3B2676', '#7B3FA0', '#B86DD7']}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
       style={styles.container}
@@ -67,8 +67,6 @@ export default function GrammarVoiceLesson() {
             "Practice introducing yourself in English. Record and listen to your own voice."
           </Text>
 
-          {/* Voice Visualization */}
-          <PracticeVoiceAnimation />
         </View>
 
         {/* Bottom Controls */}

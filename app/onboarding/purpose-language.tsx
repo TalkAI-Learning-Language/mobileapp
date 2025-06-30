@@ -21,12 +21,12 @@ const LANGUAGES = [
   { id: 'korean', name: 'Korean', flag: '🇰🇷' },
 ];
 
-export default function LanguageScreen() {
+export default function PurposeLanguageScreen() {
   const [selectedLanguage, setSelectedLanguage] = useState('english');
   const router = useRouter();
 
   const handleContinue = () => {
-    router.push('/onboarding/purpose-language');
+    router.push('/onboarding/reason');
   };
 
   const handleBack = () => {
@@ -63,7 +63,7 @@ export default function LanguageScreen() {
 
       {/* White Bottom Section */}
       <View style={styles.bottomSection}>
-        <Text style={styles.title}>What's your native language?</Text>
+        <Text style={styles.title}>Which language would you like to learn?</Text>
         
         <ScrollView style={styles.languageList} showsVerticalScrollIndicator={false}>
           {LANGUAGES.map(language => (

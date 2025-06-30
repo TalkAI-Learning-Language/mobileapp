@@ -31,32 +31,32 @@ const LESSONS_UNIT_1 = [
   },
   { 
     id: 3, 
-    title: 'Speak Freely', 
-    icon: '💬', 
+    title: 'Phrase Builder', 
+    icon: '🧱', 
     completed: false, 
     locked: false,
     type: 'speaking'
   },
   { 
     id: 4, 
-    title: 'Vocabulary', 
-    icon: '📚', 
+    title: 'Talki with a Friend', 
+    icon: '💬', 
     completed: false, 
     locked: true,
     type: 'vocabulary'
   },
   { 
     id: 5, 
-    title: 'Grammar', 
-    icon: '✏️', 
+    title: 'Pronunciation Feedback', 
+    icon: '🗣️', 
     completed: false, 
     locked: true,
     type: 'grammar'
   },
   { 
     id: 6, 
-    title: 'Speak Freely', 
-    icon: '💬', 
+    title: 'Real Life Practice Mision', 
+    icon: '🕹️', 
     completed: false, 
     locked: true,
     type: 'speaking'
@@ -197,7 +197,7 @@ export default function LessonsTab() {
 
   return (
     <LinearGradient
-      colors={['#1E3A8A', '#3B82F6', '#8B5CF6', '#A855F7']}
+      colors={['#23244D', '#3A2966', '#7B3FA0', '#23244D']}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
       style={styles.container}>

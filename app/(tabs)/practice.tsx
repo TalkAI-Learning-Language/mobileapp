@@ -224,7 +224,7 @@ export default function PracticeTab() {
 
   return (
     <LinearGradient
-      colors={['#1E3A8A', '#3B82F6', '#8B5CF6', '#A855F7']}
+      colors={['#23244D', '#3A2966', '#7B3FA0', '#23244D']}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
       style={styles.container}>
@@ -326,10 +326,7 @@ export default function PracticeTab() {
           <Image source={require('@/assets/images/buttons/keyboard.png')} style={styles.sideIcon} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.micButton}>
-          <AnimatedRecordButton
-            isListening={isListening}
-            onPress={handleMicPress}
-          />
+          <Image source={require('@/assets/images/buttons/microphone.png')} style={styles.micIcon} />
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.actionButton, selectedAnswer && styles.actionButtonEnabled]}

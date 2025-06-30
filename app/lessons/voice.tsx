@@ -18,6 +18,8 @@ import Animated, {
   cancelAnimation,
 } from 'react-native-reanimated';
 
+import NotificationAccessDialog from '@/components/ui/NotificationAccessDialog';
+
 import AnimatedRecordButton from '@/components/ui/AnimatedRecordButton';
 import MagicalEffectAnimation from '@/components/ui/MagicalEffectAnimation';
 import { useRouter } from 'expo-router';
@@ -29,6 +31,7 @@ const { width, height } = Dimensions.get('window');
 
 export default function Voice() {
   const [isListening, setIsListening] = useState(false);
+  const [showNotifDialog, setShowNotifDialog] = useState(false);
   const router = useRouter();
 
   const handleBack = () => {
@@ -37,6 +40,7 @@ export default function Voice() {
 
   const handleMicPress = () => {
     setIsListening(!isListening);
+    setShowNotifDialog(true);
   };
 
   const handleClose = () => {
@@ -45,9 +49,9 @@ export default function Voice() {
 
   return (
     <LinearGradient
-      colors={['#351555', '#6B35E7', '#442561']}
+      colors={['#23244D', '#3B2676', '#7B3FA0', '#23244D']}
       start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
+      end={{ x: 0, y: 1 }}
       style={styles.container}
     >
       <SafeAreaView style={styles.safeArea}>
@@ -59,9 +63,7 @@ export default function Voice() {
           <Text style={styles.instruction}>Say something</Text>
 
           
-          <View style={styles.content}>
-            <MagicalEffectAnimation />
-          </View>
+          <Image source={require('@/assets/images/lessons/effect.png')} />
 
           
         </View>
@@ -81,6 +83,7 @@ export default function Voice() {
               onPress={handleMicPress}
             />
           </View>
+          
           {/* {isListening && (
               <>
                 <View style={[styles.pulseRing, styles.pulseRing1]} />
@@ -96,6 +99,89 @@ export default function Voice() {
             />
           </TouchableOpacity>
         </View>
+        {/* ... existing code above ... */}
+
+        {showNotifDialog && (
+          <View
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              backgroundColor: 'rgba(0,0,0,0.4)',
+              justifyContent: 'center',
+              alignItems: 'center',
+              zIndex: 100,
+            }}
+          >
+            <View
+              style={{
+                width: 320,
+                backgroundColor: '#23232D',
+                borderRadius: 20,
+                padding: 10,
+                alignItems: 'center',
+                shadowColor: '#000',
+                shadowOpacity: 0.2,
+                shadowRadius: 20,
+                elevation: 10,
+              }}
+            >
+              <View
+                style={{
+                  backgroundColor: '#7B3FA0',
+                  borderRadius: 32,
+                  width: 48,
+                  height: 48,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginBottom: 16,
+                }}
+              >
+                <Image
+                  source={require('@/assets/images/lessons/notification_bell.png')}
+                  style={{ width: 32, height: 32, tintColor: '#C1A3FF' }}
+                />
+              </View>
+              <Text style={{ color: '#fff', fontSize: 20, fontWeight: '600', marginBottom: 8, textAlign: 'center' }}>
+                Notification Access
+              </Text>
+              <Text style={{ color: '#ccc', fontSize: 15, textAlign: 'center', marginBottom: 24 }}>
+                We'd like to send you notifications to keep you informed about important updates
+              </Text>
+              <View style={{ flexDirection: 'row', width: '100%' }}>
+                <TouchableOpacity
+                  style={{
+                    flex: 1,
+                    paddingVertical: 12,
+                    borderTopWidth: 1,
+                    borderColor: '#333',
+                    alignItems: 'center',
+                    borderBottomLeftRadius: 20,
+                  }}
+                  onPress={() => setShowNotifDialog(false)}
+                >
+                  <Text style={{ color: '#fff', fontSize: 17 }}>Later</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={{
+                    flex: 1,
+                    paddingVertical: 12,
+                    borderTopWidth: 1,
+                    borderLeftWidth: 1,
+                    borderColor: '#333',
+                    alignItems: 'center',
+                    borderBottomRightRadius: 20,
+                  }}
+                  onPress={() => setShowNotifDialog(false)}
+                >
+                  <Text style={{ color: '#B393FC', fontSize: 17, fontWeight: '600' }}>Allow</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        )}
       </SafeAreaView>
     </LinearGradient>
   );

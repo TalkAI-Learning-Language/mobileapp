@@ -123,12 +123,16 @@ export default function ProfileTab() {
     // Handle cancellation logic here
   };
 
+  const handleSeeSubScription = () => {
+    router.push('/profile/subscription')
+  }
+
   const selectedTeacherData = TEACHERS.find(t => t.id === selectedTeacher);
   const selectedLanguageData = LANGUAGES.find(l => l.id === selectedLanguage);
 
   return (
     <LinearGradient
-      colors={['#1E3A8A', '#3B82F6', '#8B5CF6', '#A855F7']}
+      colors={['#23244D', '#3A2966', '#7B3FA0', '#23244D']}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
       style={styles.container}>
@@ -420,13 +424,18 @@ export default function ProfileTab() {
 
               <TouchableOpacity
                 style={styles.modalButton}
-                onPress={() => setShowMembershipModal(false)}
+                onPress={() => {
+                  setShowMembershipModal(false);
+                  handleSeeSubScription()
+                }
+                }
               >
                 <LinearGradient
                   colors={['#667EEA', '#764BA2']}
                   start={{ x: 0, y: 0 }}
                   end={{ x: 1, y: 0 }}
                   style={styles.gradientButton}
+                  
                 >
                   <Text style={styles.modalButtonText}>See all Plans</Text>
                 </LinearGradient>
@@ -574,7 +583,7 @@ const styles = StyleSheet.create({
   profileName: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#111827',
+    color: 'white',
     marginBottom: 4,
   },
   joinDate: {
@@ -587,7 +596,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#111827',
+    color: 'white',
     marginBottom: 16,
   },
   settingItem: {

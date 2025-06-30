@@ -14,6 +14,7 @@ import {
 import { useRouter } from 'expo-router';
 
 import AnimatedRecordButton from '@/components/ui/AnimatedRecordButton';
+import CongratsFireworkAnimation from '@/components/ui/CongratsFireworkAnimation';
 
 import { LinearGradient } from 'expo-linear-gradient'; // Add this import
 
@@ -32,6 +33,7 @@ export default function VocabularyLesson() {
   const [userInput, setUserInput] = useState('');
   const [nextPracticeInput, setNextPracticeInput] = useState('');
   const [isListening, setIsListening] = useState(false);
+  const [showGreetingDialog, setShowGreetingDialog] = useState(false);
   const router = useRouter();
 
   const currentWord = VOCABULARY_WORDS[currentWordIndex];
@@ -48,14 +50,12 @@ export default function VocabularyLesson() {
   const handleNext = () => {
     if (currentWordIndex < VOCABULARY_WORDS.length - 1) {
       setShowNextModal(true);
+    } else if (currentWordIndex == VOCABULARY_WORDS.length - 1) {
+      setShowGreetingDialog(true);
     } else {
       // Lesson complete
       router.back();
     }
-  };
-
-  const handleMicPress = () => {
-    setIsListening(!isListening);
   };
 
   const handleSubmitNext = () => {
@@ -72,10 +72,12 @@ export default function VocabularyLesson() {
 
   return (
     <LinearGradient
-      colors={['#1E3A8A', '#3B82F6', '#8B5CF6', '#A855F7']}
+      colors={['#351555', '#6B35E7', '#442561']}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
-      style={styles.container}>
+      style={styles.container}
+    >
+    <SafeAreaView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={handleBack} style={styles.headerButton}>
@@ -163,11 +165,9 @@ export default function VocabularyLesson() {
               <Image source={require('@/assets/images/buttons/keyboard.png')} style={styles.sideIcon} />
             </TouchableOpacity>
             
-            
-            <AnimatedRecordButton
-              isListening={isListening}
-              onPress={handleMicPress}
-            />
+            <TouchableOpacity style={styles.micButton}>
+              <Image source={require('@/assets/images/buttons/microphone.png')} style={styles.micIcon} />
+            </TouchableOpacity>
             
             <TouchableOpacity 
               style={styles.sideButton}
@@ -190,6 +190,37 @@ export default function VocabularyLesson() {
           </View>
         )} */}
       </View>
+
+      {/* Greeting Modal */}
+      <Modal
+        visible={showGreetingDialog}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setShowGreetingDialog(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.greetingModalContent}>
+            {/* Animation */}
+            <CongratsFireworkAnimation />
+            {/* Greeting Text */}
+            <Text style={styles.greetingTitle}>Congratulations!</Text>
+            <Text style={styles.greetingSubtitle}>
+              You’ve completed this lesson. Great job practicing and interacting!
+            </Text>
+            {/* OK Button */}
+            <TouchableOpacity
+              style={styles.greetingOkButton}
+              onPress={() => {
+                setShowGreetingDialog(false);
+                router.back();
+              }}
+              activeOpacity={0.85}
+            >
+              <Text style={styles.greetingOkButtonText}>OK</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
 
       {/* Next Practice Modal */}
       <Modal
@@ -245,6 +276,7 @@ export default function VocabularyLesson() {
           </View>
         </TouchableWithoutFeedback>
       </Modal>
+    </SafeAreaView>
     </LinearGradient>
   );
 }
@@ -252,7 +284,6 @@ export default function VocabularyLesson() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8F9FA',
   },
   header: {
     flexDirection: 'row',
@@ -633,5 +664,46 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     tintColor: '#FFFFFF',
+  },
+  greetingModalContent: {
+    backgroundColor: '#fff',
+    borderRadius: 24,
+    padding: 32,
+    alignItems: 'center',
+    width: '90%',
+    maxWidth: 400,
+    alignSelf: 'center',
+  },
+  greetingTitle: {
+    fontSize: 26,
+    fontWeight: 'bold',
+    color: '#7B6EF6',
+    marginTop: 16,
+    marginBottom: 8,
+    textAlign: 'center',
+  },
+  greetingSubtitle: {
+    fontSize: 16,
+    color: '#333',
+    marginBottom: 24,
+    textAlign: 'center',
+  },
+  greetingOkButton: {
+    backgroundColor: '#7B6EF6',
+    borderRadius: 30,
+    paddingVertical: 12,
+    paddingHorizontal: 40,
+    alignItems: 'center',
+    marginTop: 8,
+    shadowColor: '#7B6EF6',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.18,
+    shadowRadius: 8,
+    elevation: 2,
+  },
+  greetingOkButtonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });

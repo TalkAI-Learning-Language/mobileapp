@@ -49,9 +49,9 @@ export default function SpeakingLesson() {
 
   return (
     <LinearGradient
-      colors={['#1E3A8A', '#3B82F6', '#8B5CF6', '#A855F7']}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
+      colors={['#23244D', '#3B2676', '#7B3FA0', '#B86DD7']}
+      start={{ x: 0.5, y: 0 }}
+      end={{ x: 0.5, y: 1 }}
       style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
