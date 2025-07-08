@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   View, 
   Text, 
@@ -9,25 +9,27 @@ import {
 } from 'react-native';
 import { useRouter } from 'expo-router';
 
+import { saveUserInfo } from '../storage/userStorage';
+
 const LANGUAGES = [
-  { id: 'spanish', name: 'Spanish', flag: '🇪🇸' },
-  { id: 'portuguese', name: 'Portuguese', flag: '🇧🇷' },
-  { id: 'french', name: 'French', flag: '🇫🇷' },
-  { id: 'english', name: 'English', flag: '🇺🇸' },
-  { id: 'german', name: 'German', flag: '🇩🇪' },
-  { id: 'mandarin', name: 'Mandarin', flag: '🇨🇳' },
-  { id: 'japanese', name: 'Japanese', flag: '🇯🇵' },
-  { id: 'italian', name: 'Italian', flag: '🇮🇹' },
-  { id: 'korean', name: 'Korean', flag: '🇰🇷' },
+  { id: 'spanish', name: 'Spanish', flag: '🇪🇸', value: 'sp' },
+  { id: 'portuguese', name: 'Portuguese', flag: '🇧🇷', value: 'pt' },
+  { id: 'french', name: 'French', flag: '🇫🇷', value: 'fr' },
+  { id: 'english', name: 'English', flag: '🇺🇸', value: 'en' },
+  { id: 'german', name: 'German', flag: '🇩🇪', value: 'ge' },
+  { id: 'mandarin', name: 'Mandarin', flag: '🇨🇳', value: 'ma' },
+  { id: 'japanese', name: 'Japanese', flag: '🇯🇵', value: 'jp' },
+  { id: 'italian', name: 'Italian', flag: '🇮🇹', value: 'ita' },
+  { id: 'korean', name: 'Korean', flag: '🇰🇷', value: 'ko' },
 ];
 
 export default function LanguageScreen() {
-  const [selectedLanguage, setSelectedLanguage] = useState('english');
+  const [selectedLanguage, setSelectedLanguage] = useState('en');
   const router = useRouter();
 
-  const handleContinue = () => {
+  const handleContinue = () => { 
     router.push('/onboarding/purpose-language');
-  };
+  };      
 
   const handleBack = () => {
     router.back();
@@ -68,13 +70,14 @@ export default function LanguageScreen() {
         <ScrollView style={styles.languageList} showsVerticalScrollIndicator={false}>
           {LANGUAGES.map(language => (
             <TouchableOpacity
-              key={language.id}
+              key={language.value}
               style={[
                 styles.languageItem,
-                selectedLanguage === language.id && styles.languageItemSelected
+                selectedLanguage === language.value && styles.languageItemSelected
               ]}
               onPress={() => {
-                  setSelectedLanguage(language.id);
+                  setSelectedLanguage(language.value);
+                  saveUserInfo({ native_language: language.value });
                   handleContinue()
                 }
               }
@@ -82,11 +85,11 @@ export default function LanguageScreen() {
               <Text style={styles.languageFlag}>{language.flag}</Text>
               <Text style={[
                 styles.languageText,
-                selectedLanguage === language.id && styles.languageTextSelected
+                selectedLanguage === language.value && styles.languageTextSelected
               ]}>
                 {language.name}
               </Text>
-              {selectedLanguage === language.id && (
+              {selectedLanguage === language.value && (
                 <View style={styles.checkmark}>
                   <Text style={styles.checkmarkText}>✓</Text>
                 </View>

@@ -17,7 +17,7 @@ const LESSONS_UNIT_1 = [
     id: 1, 
     title: 'Vocabulary', 
     icon: '📚', 
-    completed: true, 
+    completed: false, 
     locked: false,
     type: 'vocabulary'
   },
@@ -25,7 +25,7 @@ const LESSONS_UNIT_1 = [
     id: 2, 
     title: 'Grammar', 
     icon: '✏️', 
-    completed: true, 
+    completed: false, 
     locked: false,
     type: 'grammar'
   },
@@ -42,7 +42,7 @@ const LESSONS_UNIT_1 = [
     title: 'Talki with a Friend', 
     icon: '💬', 
     completed: false, 
-    locked: true,
+    locked: false,
     type: 'vocabulary'
   },
   { 
@@ -50,7 +50,7 @@ const LESSONS_UNIT_1 = [
     title: 'Pronunciation Feedback', 
     icon: '🗣️', 
     completed: false, 
-    locked: true,
+    locked: false,
     type: 'grammar'
   },
   { 

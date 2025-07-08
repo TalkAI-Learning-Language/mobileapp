@@ -11,6 +11,8 @@ import {
   Platform
 } from 'react-native';
 
+import { saveUserInfo } from '../storage/userStorage';
+
 import { LinearGradient } from 'expo-linear-gradient'; // Add this import
 
 import { useRouter } from 'expo-router';
@@ -20,9 +22,10 @@ export default function WelcomeScreen() {
   const router = useRouter();
 
   const handleContinue = () => {
-    // if (name.trim()) {
+    if (name.trim()) {
+      saveUserInfo({ name: name.trim() });
       router.push('/onboarding/greeting');
-    // }
+    }
   };
 
   const handleLogin = () => {

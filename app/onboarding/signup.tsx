@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   View, 
   Text, 
@@ -11,19 +11,93 @@ import {
   Platform
 } from 'react-native';
 
+import { signup, login } from '../api/auth';
+import { UserInfo, getUserInfo, saveUserInfo } from '../storage/userStorage';
+
 import { LinearGradient } from 'expo-linear-gradient'; // Add this import
+import LoadingOverlay from '../../components/LoadingOverlay'; // adjust path as needed
 
 import { useRouter } from 'expo-router';
 
 export default function SignUp() {
-  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('')
   const router = useRouter();
 
-  const handleContinue = () => {
-    // if (name.trim()) {
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      const info = await getUserInfo();
+      setUserInfo(info);
+    };
+    fetchUserInfo();
+  }, []);
+
+  function ErrorModal({ visible, message, onClose }: { visible: boolean, message: string, onClose: () => void }) {
+    if (!visible) return null;
+    return (
+      <View style={{
+        position: 'absolute',
+        top: 0, left: 0, right: 0, bottom: 0,
+        backgroundColor: 'rgba(0,0,0,0.3)',
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 100,
+      }}>
+        <View style={{
+          backgroundColor: '#fff',
+          padding: 24,
+          borderRadius: 12,
+          minWidth: 200,
+          alignItems: 'center',
+        }}>
+          <Text style={{ color: '#333', fontSize: 16, marginBottom: 16 }}>{message}</Text>
+          <TouchableOpacity onPress={onClose} style={{ padding: 8 }}>
+            <Text style={{ color: '#667EEA', fontWeight: 'bold' }}>OK</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  }
+
+
+  const handleContinue = async () => {
+    // const userInfo = getUserInfo();
+    // print("asdf",userInfo)
+    if (!userInfo) return;
+    setIsLoading(true);
+    try {
+      const res = await signup({
+        email,
+        password,
+        name: userInfo.name ?? '',
+        native_language: userInfo.native_language ?? '',
+        purpose_language: userInfo.purpose_language ?? '',
+        reason: userInfo.reason ?? '',
+        time: userInfo.time ?? 0,
+      });
+      
+      const loginRes = await login({ username: email, password });
+      if (loginRes.access_token !== null) {
+        // Save access token to user storage
+        await saveUserInfo({ access_token: loginRes.access_token });
         router.push('/onboarding/ready');
-    // }
+      } else {
+        setErrorMsg(loginRes.detail || 'Login Failed');
+      }
+
+      
+      console.log(loginRes)
+      // Call login API
+      
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleLogin = () => {
@@ -34,8 +108,16 @@ export default function SignUp() {
     router.back();
   };
 
+  
+
   return (
     <View style={styles.container}>
+      <LoadingOverlay visible={isLoading} />
+      <ErrorModal
+        visible={!!errorMsg}
+        message={errorMsg || ''}
+        onClose={() => setErrorMsg(null)}
+      />
       <View style={styles.header}>
         <TouchableOpacity onPress={handleBack} style={styles.backButton}>
           <Image
@@ -71,8 +153,8 @@ export default function SignUp() {
             style={styles.nameInput}
             placeholder="Enter your email"
             placeholderTextColor="#999"
-            value={name}
-            onChangeText={setName}
+            value={email}
+            onChangeText={setEmail}
             autoCapitalize="words"
             returnKeyType="done"
           />
@@ -90,17 +172,17 @@ export default function SignUp() {
 
           <TouchableOpacity
             onPress={handleContinue}
-            disabled={!name.trim()}
+            disabled={!email.trim()}
             style={{ marginBottom: 20 }}
             activeOpacity={0.8}
           >
             <LinearGradient
-              colors={name.trim() ? ['#667EEA', '#764BA2'] : ['#D1D5DB', '#D1D5DB']}
+              colors={email.trim() ? ['#667EEA', '#764BA2'] : ['#D1D5DB', '#D1D5DB']}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 0 }}
               style={[
                 styles.continueButton,
-                !name.trim() && styles.continueButtonDisabled,
+                !email.trim() && styles.continueButtonDisabled,
               ]}
             >
               <Text style={styles.continueButtonText}>Register</Text>

@@ -9,6 +9,8 @@ import {
 } from 'react-native';
 import { useRouter } from 'expo-router';
 
+import { saveUserInfo } from '../storage/userStorage';
+
 const TIME_OPTIONS = [
   { id: '5', label: '5 mins' },
   { id: '10', label: '10 mins' },
@@ -81,6 +83,7 @@ export default function TimeScreen() {
                 onPress={() => 
                   {
                     setSelectedTime(option.id);
+                    saveUserInfo({ time: Number(option.id) });
                     handleContinue();
                   }
                 }

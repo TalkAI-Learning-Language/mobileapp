@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -26,13 +26,22 @@ import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const { width, height } = Dimensions.get('window');
-
+import { AllowNotificationAccess, getNotificationAccess, saveNotificationAccess } from '../storage/notificationAccess';
 
 
 export default function Voice() {
   const [isListening, setIsListening] = useState(false);
   const [showNotifDialog, setShowNotifDialog] = useState(false);
+  const [notificationAccess, setNotificationAccess] = useState<AllowNotificationAccess | null>(null);
   const router = useRouter();
+
+  useEffect(() => {
+    const fetchNotificationAccess = async () => {
+      const info = await getNotificationAccess();
+      setNotificationAccess(info);
+    };
+    fetchNotificationAccess();
+  }, []);
 
   const handleBack = () => {
     router.back();
@@ -40,7 +49,7 @@ export default function Voice() {
 
   const handleMicPress = () => {
     setIsListening(!isListening);
-    setShowNotifDialog(true);
+    setShowNotifDialog(false);
   };
 
   const handleClose = () => {
@@ -101,7 +110,7 @@ export default function Voice() {
         </View>
         {/* ... existing code above ... */}
 
-        {showNotifDialog && (
+        {showNotifDialog && !notificationAccess && (
           <View
             style={{
               position: 'absolute',
@@ -174,7 +183,11 @@ export default function Voice() {
                     alignItems: 'center',
                     borderBottomRightRadius: 20,
                   }}
-                  onPress={() => setShowNotifDialog(false)}
+                  onPress={() => {
+                    setNotificationAccess({ notification: true });
+                    saveNotificationAccess({ notification: true});
+                    setShowNotifDialog(false);
+                  }}
                 >
                   <Text style={{ color: '#B393FC', fontSize: 17, fontWeight: '600' }}>Allow</Text>
                 </TouchableOpacity>
