@@ -6,7 +6,9 @@ import {
   SafeAreaView,
   TouchableOpacity,
   Image,
-  Dimensions
+  Dimensions,
+  Alert
+
 } from 'react-native';
 
 import Animated, {
@@ -18,11 +20,16 @@ import Animated, {
   cancelAnimation,
 } from 'react-native-reanimated';
 
+import { Audio } from 'expo-av';
+import { encode as btoa } from 'base-64';
+
 import NotificationAccessDialog from '@/components/ui/NotificationAccessDialog';
+import LoadingOverlay from '@/components/LoadingOverlay';
 
 import AnimatedRecordButton from '@/components/ui/AnimatedRecordButton';
 import MagicalEffectAnimation from '@/components/ui/MagicalEffectAnimation';
 import { useRouter } from 'expo-router';
+import * as FileSystem from 'expo-file-system'
 import { LinearGradient } from 'expo-linear-gradient';
 
 const { width, height } = Dimensions.get('window');
@@ -31,7 +38,10 @@ import { AllowNotificationAccess, getNotificationAccess, saveNotificationAccess 
 
 export default function Voice() {
   const [isListening, setIsListening] = useState(false);
-  const [showNotifDialog, setShowNotifDialog] = useState(false);
+  const [showNotifDialog, setShowNotifDialog] = useState(false);  
+  const [isLoading, setIsLoading] = useState(false);
+  const [recording, setRecording] = useState<Audio.Recording | null>(null);
+  const [caption, setCaption] = useState<string | null>(null);
   const [notificationAccess, setNotificationAccess] = useState<AllowNotificationAccess | null>(null);
   const router = useRouter();
 
@@ -43,12 +53,130 @@ export default function Voice() {
     fetchNotificationAccess();
   }, []);
 
+  function arrayBufferToBase64(buffer: ArrayBuffer): string {
+    let binary = '';
+    const bytes = new Uint8Array(buffer);
+    for (let i = 0; i < bytes.byteLength; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    return btoa(binary);
+  }
+
+  async function sendVoiceToBackend(audioUri: string) {
+    try {
+      setIsLoading(true);
+      const formData = new FormData();
+      formData.append('file', {
+        uri: audioUri,
+        type: 'audio/wav',
+        name: 'audio.wav',
+      } as any);
+
+      const response = await fetch('http://3.137.223.204:8080/api/v1/chat/voicechat', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to get voice response');
+      }
+
+      const aiText = await response.text();
+      setCaption(aiText);
+      return aiText;
+    } catch (err: any) {
+      Alert.alert('Error', err.message || 'Failed to process voice');
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  async function playTextWithElevenLabsTTS(text: string) {
+    setIsLoading(true);
+    try {
+      const response = await fetch(
+        `https://api.elevenlabs.io/v1/text-to-speech/dCnu06FiOZma2KVNUoPZ`,
+        {
+          method: 'POST',
+          headers: {
+            'xi-api-key': 'sk_8d2b0a34e73399bd9a9c03a70be3f1dc42a8031e5ee19730',
+            'Accept': 'audio/mpeg',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            text: text,
+            model_id: 'eleven_multilingual_v2',
+            voice_settings: {
+              stability: 0.5,
+              similarity_boost: 0.5,
+            },
+          }),
+        }
+      );
+  
+      if (!response.ok) {
+        throw new Error('Failed to get TTS audio');
+      }
+  
+      const arrayBuffer = await response.arrayBuffer();
+      const base64Audio = arrayBufferToBase64(arrayBuffer);
+      const tempFilePath = FileSystem.cacheDirectory + `tts_${Date.now()}.mp3`;
+      await FileSystem.writeAsStringAsync(tempFilePath, base64Audio, { encoding: FileSystem.EncodingType.Base64 });
+  
+      const { sound } = await Audio.Sound.createAsync({ uri: tempFilePath });
+      await sound.playAsync();
+    } catch (err: any) {
+      Alert.alert('Error', err.message || 'Failed to play TTS audio');
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   const handleBack = () => {
     router.back();
   };
 
-  const handleMicPress = () => {
-    setIsListening(!isListening);
+  const handleMicPress = async () => {
+    if (!isListening) {
+      setCaption(null);
+      // Start recording
+      try {
+        const { status } = await Audio.requestPermissionsAsync();
+        if (status !== 'granted') {
+          Alert.alert('Permission required', 'Please grant microphone access.');
+          return;
+        }
+        await Audio.setAudioModeAsync({
+          allowsRecordingIOS: true,
+          playsInSilentModeIOS: true,
+        });
+        const { recording } = await Audio.Recording.createAsync(
+          Audio.RecordingOptionsPresets.HIGH_QUALITY
+        );
+        setRecording(recording);
+        setIsListening(true);
+      } catch (err) {
+        Alert.alert('Error', 'Failed to start recording');
+      }
+    } else {
+      // Stop recording and send to backend
+      try {
+        setIsListening(false);
+        if (recording) {
+          await recording.stopAndUnloadAsync();
+          const uri = recording.getURI();
+          setRecording(null);
+          if (uri) {
+            const aiText = await sendVoiceToBackend(uri);
+            if (aiText) {
+              await playTextWithElevenLabsTTS(aiText)
+            }
+          }
+        }
+      } catch (err) {
+        Alert.alert('Error', 'Failed to stop recording');
+      }
+    }
     setShowNotifDialog(false);
   };
 
@@ -63,6 +191,7 @@ export default function Voice() {
       end={{ x: 0, y: 1 }}
       style={styles.container}
     >
+      <LoadingOverlay visible={isLoading} />
       <SafeAreaView style={styles.safeArea}>
         {/* Header */}
 
@@ -74,7 +203,29 @@ export default function Voice() {
           
           <Image source={require('@/assets/images/lessons/effect.png')} />
 
-          
+          {caption && !isLoading && (
+            <View style={{
+              position: 'absolute',
+              top: 0, left: 0, right: 0, bottom: 0,
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginTop: 500,
+              zIndex: 200,
+            }}>
+              <View style={{
+                paddingHorizontal: 24,
+                paddingVertical: 16,
+                backgroundColor: 'rgba(30,30,30,0.85)',
+                borderRadius: 16,
+                maxWidth: '80%',
+              }}>
+                <Text style={{ color: '#fff', fontSize: 20, textAlign: 'center' }}>
+                  {caption}
+                </Text>
+              </View>
+            </View>
+          )}
+
         </View>
 
         {/* Bottom Controls */}
