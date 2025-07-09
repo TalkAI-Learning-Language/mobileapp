@@ -16,6 +16,7 @@ export default function OnboardingLayout() {
       <Stack.Screen name="ready" />
       <Stack.Screen name="final" />
       <Stack.Screen name="signup" />
+      <Stack.Screen name="purpose-language" />
     </Stack>
   );
 }

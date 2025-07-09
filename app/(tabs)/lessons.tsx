@@ -12,12 +12,12 @@ import { useRouter } from 'expo-router';
 
 import { LinearGradient } from 'expo-linear-gradient'; // Add this import
 
-const LESSONS = [
+const LESSONS_UNIT_1 = [
   { 
     id: 1, 
     title: 'Vocabulary', 
     icon: '📚', 
-    completed: true, 
+    completed: false, 
     locked: false,
     type: 'vocabulary'
   },
@@ -25,16 +25,115 @@ const LESSONS = [
     id: 2, 
     title: 'Grammar', 
     icon: '✏️', 
-    completed: true, 
+    completed: false, 
     locked: false,
+    type: 'grammar'
+  },
+  { 
+    id: 3, 
+    title: 'Phrase Builder', 
+    icon: '🧱', 
+    completed: false, 
+    locked: false,
+    type: 'speaking'
+  },
+  { 
+    id: 4, 
+    title: 'Talki with a Friend', 
+    icon: '💬', 
+    completed: false, 
+    locked: false,
+    type: 'vocabulary'
+  },
+  { 
+    id: 5, 
+    title: 'Pronunciation Feedback', 
+    icon: '🗣️', 
+    completed: false, 
+    locked: false,
+    type: 'grammar'
+  },
+  { 
+    id: 6, 
+    title: 'Real Life Practice Mision', 
+    icon: '🕹️', 
+    completed: false, 
+    locked: true,
+    type: 'speaking'
+  },
+  { 
+    id: 7, 
+    title: 'Vocabulary', 
+    icon: '📚', 
+    completed: false, 
+    locked: true,
+    type: 'vocabulary'
+  },
+  { 
+    id: 8, 
+    title: 'Grammar', 
+    icon: '✏️', 
+    completed: false, 
+    locked: true,
+    type: 'grammar'
+  },
+  { 
+    id: 9, 
+    title: 'Speak Freely', 
+    icon: '💬', 
+    completed: false, 
+    locked: true,
+    type: 'speaking'
+  },
+  { 
+    id: 10, 
+    title: 'Vocabulary', 
+    icon: '📚', 
+    completed: false, 
+    locked: true,
+    type: 'vocabulary'
+  },
+  { 
+    id: 11, 
+    title: 'Grammar', 
+    icon: '✏️', 
+    completed: false, 
+    locked: true,
+    type: 'grammar'
+  },
+  { 
+    id: 12, 
+    title: 'Speak Freely', 
+    icon: '💬', 
+    completed: false, 
+    locked: true,
+    type: 'speaking'
+  },
+];
+
+const LESSONS_UNIT_2 = [
+  { 
+    id: 1, 
+    title: 'Vocabulary', 
+    icon: '📚', 
+    completed: false, 
+    locked: true,
+    type: 'vocabulary'
+  },
+  { 
+    id: 2, 
+    title: 'Grammar', 
+    icon: '✏️', 
+    completed: true, 
+    locked: true,
     type: 'grammar'
   },
   { 
     id: 3, 
     title: 'Speak Freely', 
     icon: '💬', 
-    completed: true, 
-    locked: false,
+    completed: false, 
+    locked: true,
     type: 'speaking'
   },
   { 
@@ -42,7 +141,7 @@ const LESSONS = [
     title: 'Vocabulary', 
     icon: '📚', 
     completed: false, 
-    locked: false,
+    locked: true,
     type: 'vocabulary'
   },
   { 
@@ -50,17 +149,9 @@ const LESSONS = [
     title: 'Grammar', 
     icon: '✏️', 
     completed: false, 
-    locked: false,
+    locked: true,
     type: 'grammar'
-  },
-  { 
-    id: 6, 
-    title: 'Speak Freely', 
-    icon: '💬', 
-    completed: false, 
-    locked: false,
-    type: 'speaking'
-  },
+  }
 ];
 
 export default function LessonsTab() {
@@ -89,8 +180,27 @@ export default function LessonsTab() {
     }
   };
 
+  const handleLessonPlayPress = (lesson : any) => {
+    console.log("lesson type: ",lesson.type)
+    if (!lesson.locked) {
+      // Navigate to specific lesson type
+      // Only allow known lesson types to satisfy the type checker
+      const allowedTypes = ['vocabulary', 'grammar', 'speaking'] as const;
+      if (lesson.type == 'vocabulary')
+        router.push('/lessons/voice')
+      else if (lesson.type == 'grammar')
+        router.push('/lessons/grammar-voice')
+      else if (lesson.type == 'speaking')
+        router.push('/lessons/voice')
+    }
+  }
+
   return (
-    <SafeAreaView style={styles.container}>
+    <LinearGradient
+      colors={['#23244D', '#3A2966', '#7B3FA0', '#23244D']}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={styles.container}>
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Header */}
         <View style={styles.header}>
@@ -117,7 +227,7 @@ export default function LessonsTab() {
                 style={styles.iconImage}
                 resizeMode="contain"
               />
-              <Text style={styles.statValue}>20 min</Text>
+              <Text style={styles.statValue}> 20 min</Text>
             </View>
           </View>
           <View style={styles.statCard}>
@@ -128,7 +238,7 @@ export default function LessonsTab() {
                 style={styles.iconImage}
                 resizeMode="contain"
               />
-              <Text style={styles.statValue}>2</Text>
+              <Text style={styles.statValue}> 2</Text>
             </View>
           </View>
           <View style={styles.statCard}>
@@ -139,7 +249,7 @@ export default function LessonsTab() {
                 style={styles.iconImage}
                 resizeMode="contain"
               />
-              <Text style={styles.statValue}>1</Text>
+              <Text style={styles.statValue}> 1</Text>
             </View>
           </View>
         </View>
@@ -181,17 +291,14 @@ export default function LessonsTab() {
 
         {/* Lessons List */}
         <View style={styles.lessonsContainer}>
-          {LESSONS.map((lesson, index) => (
-            <TouchableOpacity
-              key={lesson.id}
-              style={[
-                styles.lessonItem,
-                lesson.locked && styles.lessonItemLocked
-              ]}
-              onPress={() => handleLessonPress(lesson)}
-              disabled={lesson.locked}
-            >
-              <View style={styles.lessonLeft}>
+          {LESSONS_UNIT_1.map((lesson, index) => (
+            <View style={{ flexDirection: "row" }} key={lesson.id}>
+              <TouchableOpacity
+                style={[
+                  styles.lessonItemCheck,
+                  lesson.locked && styles.lessonItemLocked
+                ]}
+                >
                 <View style={[
                   styles.lessonIconContainer,
                   lesson.completed && styles.lessonIconCompleted,
@@ -205,38 +312,125 @@ export default function LessonsTab() {
                     <Text style={styles.lessonIcon}>{lesson.icon}</Text>
                   )}
                 </View>
-                <Text style={[
-                  styles.lessonTitle,
-                  lesson.locked && styles.lessonTitleLocked
-                ]}>
-                  {lesson.title}
-                </Text>
-              </View>
-              
-              <TouchableOpacity 
+              </TouchableOpacity>
+              <TouchableOpacity
+                key={lesson.id}
                 style={[
-                  styles.playButton,
-                  lesson.locked && styles.playButtonLocked
+                  styles.lessonItem,
+                  lesson.locked && styles.lessonItemLocked
                 ]}
+                onPress={() => handleLessonPress(lesson)}
                 disabled={lesson.locked}
               >
-                <Text style={[
-                  styles.playButtonText,
-                  lesson.locked && styles.playButtonTextLocked
-                ]}>
-                  Play
-                </Text>
-                <Image
-                  source={require('@/assets/images/lessons/play.png')}
-                  style={styles.iconImage}
-                  resizeMode="contain"
-                />
+                <View style={styles.lessonLeft}>
+                  
+                  <Text style={[
+                    styles.lessonTitle,
+                    lesson.locked && styles.lessonTitleLocked
+                  ]}>
+                    {lesson.icon} {lesson.title}
+                  </Text>
+                </View>
+                
+                <TouchableOpacity 
+                  style={[
+                    styles.playButton,
+                    lesson.locked && styles.playButtonLocked
+                  ]}
+                  disabled={lesson.locked}
+                  onPress={() => handleLessonPlayPress(lesson)}
+                >
+                  <Text style={[
+                    styles.playButtonText,
+                    lesson.locked && styles.playButtonTextLocked
+                  ]}>
+                    Play
+                  </Text>
+                  <Image
+                    source={require('@/assets/images/lessons/play.png')}
+                    style={styles.iconImage}
+                    resizeMode="contain"
+                  />
+                </TouchableOpacity>
               </TouchableOpacity>
-            </TouchableOpacity>
+            </View>
+          ))}
+        </View>
+        {/* Unit Section */}
+        <View style={styles.unitSection}>
+          <Text style={styles.unitTitle}>Unit 2</Text>
+          <Text style={styles.unitSubtitle}>Free Conversation</Text>
+        </View>
+
+        {/* Lessons List */}
+        <View style={styles.lessonsContainer}>
+          {LESSONS_UNIT_2.map((lesson, index) => (
+            <View style={{ flexDirection: "row" }} key={lesson.id}>
+              <TouchableOpacity
+                style={[
+                  styles.lessonItemCheck,
+                  lesson.locked && styles.lessonItemLocked
+                ]}
+                >
+                <View style={[
+                  styles.lessonIconContainer,
+                  lesson.completed && styles.lessonIconCompleted,
+                  lesson.locked && styles.lessonIconLocked
+                ]}>
+                  {lesson.completed ? (
+                    <Text style={styles.completedIcon}>✓</Text>
+                  ) : lesson.locked ? (
+                    <Text style={styles.lockedIcon}>🔒</Text>
+                  ) : (
+                    <Text style={styles.lessonIcon}>{lesson.icon}</Text>
+                  )}
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                key={lesson.id}
+                style={[
+                  styles.lessonItem,
+                  lesson.locked && styles.lessonItemLocked
+                ]}
+                onPress={() => handleLessonPress(lesson)}
+                disabled={lesson.locked}
+              >
+                <View style={styles.lessonLeft}>
+                  
+                  <Text style={[
+                    styles.lessonTitle,
+                    lesson.locked && styles.lessonTitleLocked
+                  ]}>
+                    {lesson.icon} {lesson.title}
+                  </Text>
+                </View>
+                
+                <TouchableOpacity 
+                  style={[
+                    styles.playButton,
+                    lesson.locked && styles.playButtonLocked
+                  ]}
+                  disabled={lesson.locked}
+                  onPress={() => handleLessonPlayPress(lesson)}
+                >
+                  <Text style={[
+                    styles.playButtonText,
+                    lesson.locked && styles.playButtonTextLocked
+                  ]}>
+                    Play
+                  </Text>
+                  <Image
+                    source={require('@/assets/images/lessons/play.png')}
+                    style={styles.iconImage}
+                    resizeMode="contain"
+                  />
+                </TouchableOpacity>
+              </TouchableOpacity>
+            </View>
           ))}
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </LinearGradient>
   );
 }
 
@@ -261,7 +455,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: '#111827',
+    color: 'white',
   },
   streakContainer: {
     flexDirection: 'row',
@@ -296,13 +490,13 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   statValue: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold',
     color: '#333',
     marginBottom: 2,
   },
   statLabel: {
-    fontSize: 12,
+    fontSize: 16,
     color: '#666',
   },
   currentLessonContainer: {
@@ -342,17 +536,17 @@ const styles = StyleSheet.create({
   },
   unitTitle: {
     fontSize: 16,
-    color: '#666',
+    color: 'white',
     marginBottom: 4,
   },
   unitSubtitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#333',
+    color: 'white',
   },
   lessonsContainer: {
     gap: 16,
-    paddingBottom: 100,
+    paddingBottom: 50,
   },
   lessonItem: {
     backgroundColor: '#FFFFFF',
@@ -366,6 +560,25 @@ const styles = StyleSheet.create({
       width: 0,
       height: 1,
     },
+    width: '73%',
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  lessonItemCheck: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
+    padding: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    width: 72,
+    marginRight: 20,
     shadowOpacity: 0.05,
     shadowRadius: 4,
     elevation: 2,
@@ -385,7 +598,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#F3F4F6',
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 16,
   },
   lessonIconCompleted: {
     backgroundColor: '#343434',
@@ -450,6 +662,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#08080833'
   }, 
   statRow: {
-
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 5,
+    backgroundColor: 'rgba(109 107 107 / 0.2)',
+    paddingHorizontal: 7,
+    paddingVertical: 5,
+    borderRadius: 10,
   }
 });

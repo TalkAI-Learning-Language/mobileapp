@@ -2,7 +2,8 @@ import { useEffect } from 'react';
 import { 
   View,
   StyleSheet,
-  Text
+  Text,
+  Image
 } from 'react-native';
 import { useRouter } from 'expo-router';
 
@@ -20,9 +21,11 @@ export default function SplashScreen() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.logoContainer}>
-        
-      </View>
+      <Image
+        source={require('@/assets/images/splash-icon.png')}
+        style={styles.iconImage}
+        resizeMode="contain"
+      />
     </View>
   );
 }
@@ -39,5 +42,10 @@ const styles = StyleSheet.create({
     height: 100,
     backgroundColor: 'rgba(255, 255, 255, 0.2)',
     borderRadius: 50,
+  },
+  iconImage: {
+    width: 200,
+    height: 200,
+    alignSelf: 'center',
   },
 });

@@ -11,6 +11,8 @@ import {
   Platform
 } from 'react-native';
 
+import { saveUserInfo } from '../storage/userStorage';
+
 import { LinearGradient } from 'expo-linear-gradient'; // Add this import
 
 import { useRouter } from 'expo-router';
@@ -20,13 +22,14 @@ export default function WelcomeScreen() {
   const router = useRouter();
 
   const handleContinue = () => {
-    // if (name.trim()) {
+    if (name.trim()) {
+      saveUserInfo({ name: name.trim() });
       router.push('/onboarding/greeting');
-    // }
+    }
   };
 
   const handleLogin = () => {
-    router.push('/onboarding/save-progress');
+    router.push('/auth/login');
   };
 
   return (
@@ -170,7 +173,7 @@ const styles = StyleSheet.create({
   },
   nameInput: {
     backgroundColor: '#F8F9FA',
-    borderRadius: 12,
+    borderRadius: 40,
     padding: 16,
     fontSize: 16,
     marginBottom: 20,
@@ -202,5 +205,7 @@ const styles = StyleSheet.create({
   loginLink: {
     color: '#667EEA',
     fontWeight: '600',
+    textDecorationLine: 'underline',
+    textDecorationColor: '#667EEA',
   },
 });

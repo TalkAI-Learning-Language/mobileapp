@@ -31,7 +31,7 @@ export default function GoalsScreen() {
   };
 
   const handleContinue = () => {
-    router.push('/onboarding/experience');
+    // router.push('/onboarding/');
   };
 
   return (

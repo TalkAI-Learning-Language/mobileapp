@@ -27,7 +27,7 @@ export default function WelcomeScreen() {
   };
 
   const handleLogin = () => {
-    router.push('/onboarding/save-progress');
+    router.replace('/(tabs)/lessons');
   };
 
   const handleBack = () => {
@@ -89,7 +89,7 @@ export default function WelcomeScreen() {
           />
 
           <TouchableOpacity
-            onPress={handleContinue}
+            onPress={handleLogin}
             disabled={!name.trim()}
             style={{ marginBottom: 20 }}
             activeOpacity={0.8}

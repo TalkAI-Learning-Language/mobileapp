@@ -9,6 +9,8 @@ import {
 } from 'react-native';
 import { useRouter } from 'expo-router';
 
+import { saveUserInfo } from '../storage/userStorage';
+
 const REASONS = [
   { id: 'work', title: 'For work', image: 'work.png' },
   { id: 'school', title: 'For school or exams', image: 'school.png' },
@@ -88,6 +90,7 @@ export default function ReasonScreen() {
                 ]}
                 onPress={() => {
                   setSelectedReason(reason.id);
+                  saveUserInfo({ reason: reason.title });
                   handleContinue();
                 }}
               >
