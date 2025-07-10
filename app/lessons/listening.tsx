@@ -22,49 +22,67 @@ import AnimatedRecordButton from '@/components/ui/AnimatedRecordButton';
 import { LinearGradient } from 'expo-linear-gradient'; // Add this import
 
 const LISTENING_SCRIPT = [
-  { text: "Hi there and welcome to this podcast episode.", hasAudio: true },
-  { text: "If you're learning English, then listening to these podcasts will help your language learning.", hasAudio: true },
-  { text: "Let's cover a really juicy topic today to keep your interest while your brain does its English language practice.", hasAudio: true },
-  { text: "Have you ever done a calorie restricted diet?", hasAudio: true },
-  { text: "A calorie is a unit of energy, similar to a joule, J-O-U-L-E.", hasAudio: true },
-  { text: "And a calorie restricted diet is a very traditional way that people use to try to lose weight.", hasAudio: true },
-  { text: "You restrict the number of calories in your food.", hasAudio: true },
-  { text: "Have you tried a calorie counted diet? Did it work?", hasAudio: true },
-  { text: "Today's podcast is partner to subscription episode 72, which talks in more detail about our understanding of diet and the best ways to lose weight and how we know so much more in recent years.", hasAudio: true },
-  { text: "That episode also covers the story of calorie counting and the rise of weight watchers and how that became a billion dollar industry which is no longer successful.", hasAudio: true },
-  { text: "In this podcast today, I'm going to talk about why I'm pleased that calorie counting and weight watchers and similar organisations are no longer the model for losing weight that many people use and why I think weight watchers may have been harmful.", hasAudio: true },
-  { text: "A generation of women and girls had been taught to regard food not as something pleasurable and good and healthy but rather as an enemy, something to be controlled and limited.", hasAudio: true },
-  { text: "It's perhaps a controversial opinion but I would be really interested to hear from you if you have a different opinion.", hasAudio: true },
-  { text: "And this podcast covers what I hope will be an interesting topic to keep you listening longer so that you learn more English.", hasAudio: true },
+  { text: "If you want to know more about our subscription service, it covers even more fascinating topics than you hear on the podcast.", hasAudio: true },
+  { text: "More in depth and many more of them. Our paid subscription service is helping a lot of people develop their English language skills.", hasAudio: true },
+  { text: "And we've covered some great topics recently. Find out what I really thought of Jeff Bezos' Blue Origin Rocket which took six women into space recently.", hasAudio: true },
+  { text: "Hear about how we make our coffee and find out about the trend in the art world towards 'immersive experiences'.", hasAudio: true },
+  { text: "That's really evident in London and other places and learn whether you suffer from a particular type of social anxiety that's very common and what to do about it.", hasAudio: true },
+  { text: "Those were just some recent topics. Many more are covered in our subscription service and it's great value for money and a brilliant way to continue improving your English.", hasAudio: true },
+  { text: "So the harm done by weight watchers and calorie counting to a generation of women?", hasAudio: true },
+  { text: "First of all, just an acknowledgement to anyone listening who's done Weight Watchers or done calorie counted dieting, calorie controlled dieting, if it worked for you well done.", hasAudio: true },
+  { text: "I in no way want to lessen that achievement. If anything even more praised because what I'm saying is that it's actually quite difficult to lose weight on a calorie counted diet.", hasAudio: true },
+  { text: "It needs huge amounts of self-control. I mentioned in subscription episode 72 a newspaper article I read by Zing Tseng.", hasAudio: true },
+  { text: "With the title, 'A Generation of Women are Still Haunted by Weight Watchers'. The word 'haunted' there is from the verb 'to haunt', H-A-U-N-T which means 'to cause repeated suffering or anxiety'.", hasAudio: true },
+  { text: "That's a big word. So the idea that Weight Watchers has caused lots of suffering and anxiety.", hasAudio: true },
+  { text: "Zing Tseng also says, \"Weight Watchers and calorie restriction profoundly altered how a generation of women and girls felt about food, not as a pleasurable source of nourishment but as something to be controlled and limited.\"", hasAudio: true },
+  { text: "Or as she says later in the article, \"The idea of food as something to be portioned and carefully handled like a radioactive substance which could ruin your week if you weren't careful.\"", hasAudio: true },
 ];
 
 const COMPREHENSION_QUESTIONS = [
   {
-    question: "What is a calorie restricted diet?",
+    question: "What does the speaker say about the subscription service?",
     options: [
-      "A way to eat only fruits and vegetables.",
-      "A diet where you limit the number of calories to lose weight.",
-      "A diet where you eat more calories than usual."
+      "It's only for advanced English learners.",
+      "It covers more fascinating topics in greater depth than the podcast.",
+      "It's completely free for all listeners."
     ],
-    correctAnswer: "A diet where you limit the number of calories to lose weight."
+    correctAnswer: "It covers more fascinating topics in greater depth than the podcast."
   },
   {
-    question: "What is the main benefit of listening to this podcast for learners?",
+    question: "What is one of the topics mentioned in the subscription service?",
     options: [
-      "It teaches you how to cook healthy meals.",
-      "It helps you improve your English while listening.",
-      "It helps you become a professional dietitian."
+      "How to lose weight with calorie counting.",
+      "Jeff Bezos' Blue Origin Rocket that took six women to space.",
+      "How to cook healthy meals at home."
     ],
-    correctAnswer: "It helps you improve your English while listening."
+    correctAnswer: "Jeff Bezos' Blue Origin Rocket that took six women to space."
   },
   {
-    question: "According to the speaker, what negative impact did Weight Watchers and similar programs have?",
+    question: "According to the article by Zing Tseng, what does the word 'haunted' mean in the context?",
     options: [
-      "They encouraged people to eat more snacks.",
-      "They made people exercise too much.",
-      "They taught a generation to see food as an enemy to be controlled and limited."
+      "To be visited by ghosts.",
+      "To cause repeated suffering or anxiety.",
+      "To remember fondly."
     ],
-    correctAnswer: "They taught a generation to see food as an enemy to be controlled and limited."
+    correctAnswer: "To cause repeated suffering or anxiety."
+  },
+  {
+    question: "How does Zing Tseng describe how Weight Watchers made women view food?",
+    options: [
+      "As a pleasurable source of nourishment.",
+      "As something to be enjoyed in moderation.",
+      "As something to be controlled and limited, like a radioactive substance."
+    ],
+    correctAnswer: "As something to be controlled and limited, like a radioactive substance."
+  },
+  {
+    question: "What does the speaker acknowledge about calorie counting diets?",
+    options: [
+      "They are the best way to lose weight.",
+      "They require huge amounts of self-control and are difficult.",
+      "They are completely ineffective for everyone."
+    ],
+    correctAnswer: "They require huge amounts of self-control and are difficult."
   }
 ];
 
@@ -74,7 +92,7 @@ const COMPREHENSION_OPTIONS = [
   'A birthday party',
 ];
 
-export default function PracticeTab() {
+export default function ListeningLesson() {
   const [selectedAnswer, setSelectedAnswer] = useState<string>('');
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [showCompletionModal, setShowCompletionModal] = useState(false);
@@ -98,7 +116,7 @@ export default function PracticeTab() {
   const [isSentencePlaying, setIsSentencePlaying] = useState(false);
   
   const router = useRouter();
-  const AUDIO_FILE = require('@/assets/music/1-1.mp3')
+  const AUDIO_FILE = require('@/assets/music/1-2.mp3')
 
   // Load and unload sound when component mounts/unmounts
   useEffect(() => {

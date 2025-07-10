@@ -33,6 +33,35 @@ export default function WelcomeScreen() {
       if (loginRes.access_token !== null) {
         // Save access token to user storage
         await saveUserInfo({ access_token: loginRes.access_token });
+        // Call test-token API to get user info
+        try {
+          const userInfoResponse = await fetch('http://3.137.223.204:8080/api/v1/login/test-token', {
+            method: 'POST',
+            headers: {
+              'accept': 'application/json',
+              'Authorization': `Bearer ${loginRes.access_token}`
+            }
+          });
+          
+          if (userInfoResponse.ok) {
+            const userData = await userInfoResponse.json();
+            
+            // Save user info to storage
+            await saveUserInfo({
+              id: userData.id,
+              email: userData.email,
+              name: userData.name,
+              native_language: userData.native_language,
+              purpose_language: userData.purpose_language,
+              reason: userData.reason,
+              time: userData.time,
+              teacher: userData.teacher
+            });
+          }
+        } catch (userInfoError) {
+          console.error('Failed to fetch user info:', userInfoError);
+          // Continue with navigation even if user info fetch fails
+        }
         router.replace('/(tabs)/lessons');
       } else {
         setErrorMsg(loginRes.detail || 'Login Failed');

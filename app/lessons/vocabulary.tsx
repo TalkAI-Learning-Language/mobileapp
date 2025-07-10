@@ -142,19 +142,6 @@ export default function VocabularyLesson() {
                 <Text style={styles.sendButtonText}>→</Text>
               </TouchableOpacity>
             </View>
-            
-            {/* Custom Keyboard Suggestions */}
-            <View style={styles.suggestions}>
-              <TouchableOpacity style={styles.suggestionButton}>
-                <Text style={styles.suggestionText}>"The"</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.suggestionButton}>
-                <Text style={styles.suggestionText}>the</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.suggestionButton}>
-                <Text style={styles.suggestionText}>to</Text>
-              </TouchableOpacity>
-            </View>
           </View>
         ) : (
           <View style={styles.actionButtons}>
