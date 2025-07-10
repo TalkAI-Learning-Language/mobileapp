@@ -39,11 +39,11 @@ const LESSONS_UNIT_1 = [
   },
   { 
     id: 4, 
-    title: 'Talki with a Friend', 
-    icon: '💬', 
+    title: 'Listening', 
+    icon: '🎧', 
     completed: false, 
     locked: false,
-    type: 'vocabulary'
+    type: 'listening'
   },
   { 
     id: 5, 
@@ -51,63 +51,15 @@ const LESSONS_UNIT_1 = [
     icon: '🗣️', 
     completed: false, 
     locked: false,
-    type: 'grammar'
+    type: 'voice'
   },
   { 
     id: 6, 
     title: 'Real Life Practice Mision', 
     icon: '🕹️', 
     completed: false, 
-    locked: true,
-    type: 'speaking'
-  },
-  { 
-    id: 7, 
-    title: 'Vocabulary', 
-    icon: '📚', 
-    completed: false, 
-    locked: true,
-    type: 'vocabulary'
-  },
-  { 
-    id: 8, 
-    title: 'Grammar', 
-    icon: '✏️', 
-    completed: false, 
-    locked: true,
-    type: 'grammar'
-  },
-  { 
-    id: 9, 
-    title: 'Speak Freely', 
-    icon: '💬', 
-    completed: false, 
-    locked: true,
-    type: 'speaking'
-  },
-  { 
-    id: 10, 
-    title: 'Vocabulary', 
-    icon: '📚', 
-    completed: false, 
-    locked: true,
-    type: 'vocabulary'
-  },
-  { 
-    id: 11, 
-    title: 'Grammar', 
-    icon: '✏️', 
-    completed: false, 
-    locked: true,
-    type: 'grammar'
-  },
-  { 
-    id: 12, 
-    title: 'Speak Freely', 
-    icon: '💬', 
-    completed: false, 
-    locked: true,
-    type: 'speaking'
+    locked: false,
+    type: 'grammar-voice'
   },
 ];
 
@@ -124,7 +76,7 @@ const LESSONS_UNIT_2 = [
     id: 2, 
     title: 'Grammar', 
     icon: '✏️', 
-    completed: true, 
+    completed: false, 
     locked: true,
     type: 'grammar'
   },
@@ -151,7 +103,15 @@ const LESSONS_UNIT_2 = [
     completed: false, 
     locked: true,
     type: 'grammar'
-  }
+  },
+  { 
+    id: 6, 
+    title: 'Real Life Practice Mision', 
+    icon: '🕹️', 
+    completed: false, 
+    locked: true,
+    type: 'speaking'
+  },
 ];
 
 export default function LessonsTab() {
@@ -168,13 +128,16 @@ export default function LessonsTab() {
     if (!lesson.locked) {
       // Navigate to specific lesson type
       // Only allow known lesson types to satisfy the type checker
-      const allowedTypes = ['vocabulary', 'grammar', 'speaking'] as const;
+      const allowedTypes = ['vocabulary', 'grammar', 'speaking', 'listening', 'voice', 'grammar-voice'] as const;
       type LessonType = typeof allowedTypes[number];
       if (allowedTypes.includes(lesson.type)) {
         router.push(`/lessons/${lesson.type}` as
           | '/lessons/vocabulary'
           | '/lessons/grammar'
           | '/lessons/speaking'
+          | '/lessons/listening'
+          | '/lessons/voice'
+          | '/lessons/grammar-voice'
         );
       }
     }
@@ -185,13 +148,18 @@ export default function LessonsTab() {
     if (!lesson.locked) {
       // Navigate to specific lesson type
       // Only allow known lesson types to satisfy the type checker
-      const allowedTypes = ['vocabulary', 'grammar', 'speaking'] as const;
-      if (lesson.type == 'vocabulary')
-        router.push('/lessons/voice')
-      else if (lesson.type == 'grammar')
-        router.push('/lessons/grammar-voice')
-      else if (lesson.type == 'speaking')
-        router.push('/lessons/voice')
+      const allowedTypes = ['vocabulary', 'grammar', 'speaking', 'listening', 'voice', 'grammar-voice'] as const;
+      type LessonType = typeof allowedTypes[number];
+      if (allowedTypes.includes(lesson.type)) {
+        router.push(`/lessons/${lesson.type}` as
+          | '/lessons/vocabulary'
+          | '/lessons/grammar'
+          | '/lessons/speaking'
+          | '/lessons/listening'
+          | '/lessons/voice'
+          | '/lessons/grammar-voice'
+        );
+      }
     }
   }
 
@@ -547,6 +515,7 @@ const styles = StyleSheet.create({
   lessonsContainer: {
     gap: 16,
     paddingBottom: 50,
+    width: '100%',
   },
   lessonItem: {
     backgroundColor: '#FFFFFF',
@@ -560,7 +529,7 @@ const styles = StyleSheet.create({
       width: 0,
       height: 1,
     },
-    width: '73%',
+    flex: 1,
     shadowOpacity: 0.05,
     shadowRadius: 4,
     elevation: 2,
@@ -571,14 +540,14 @@ const styles = StyleSheet.create({
     padding: 20,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 1,
     },
-    width: 72,
-    marginRight: 20,
+    width: 80,
+    marginRight: 12,
     shadowOpacity: 0.05,
     shadowRadius: 4,
     elevation: 2,

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   View, 
   Text, 
@@ -12,6 +12,7 @@ import {
   TextInput
 } from 'react-native';
 
+import { getUserInfo, UserInfo } from '../storage/userStorage';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -79,6 +80,15 @@ export default function ProfileTab() {
   const [cancellationText, setCancellationText] = useState('');
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+
+  useEffect(() => {
+    const fetchUserInfo = async ()=> {
+      const info = await getUserInfo();
+      setUserInfo(info);
+    };
+    fetchUserInfo();
+  }, []);
 
   const handleSettingPress = (itemId: string) => {
     switch (itemId) {
@@ -139,7 +149,7 @@ export default function ProfileTab() {
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Profile Header */}
         <View style={styles.profileHeader}>
-          <Text style={styles.profileName}>Emma Doe</Text>
+          <Text style={styles.profileName}>{userInfo?.name || 'User'}</Text>
           <Text style={styles.joinDate}>Joined May 5, 2025</Text>
         </View>
 

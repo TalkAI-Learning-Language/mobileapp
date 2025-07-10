@@ -34,7 +34,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 const { width, height } = Dimensions.get('window');
 import { AllowNotificationAccess, getNotificationAccess, saveNotificationAccess } from '../storage/notificationAccess';
-
+import { getUserInfo, UserInfo } from '../storage/userStorage';
 
 export default function Voice() {
   const [isListening, setIsListening] = useState(false);
@@ -43,7 +43,16 @@ export default function Voice() {
   const [recording, setRecording] = useState<Audio.Recording | null>(null);
   const [caption, setCaption] = useState<string | null>(null);
   const [notificationAccess, setNotificationAccess] = useState<AllowNotificationAccess | null>(null);
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const router = useRouter();
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      const info = await getUserInfo();
+      setUserInfo(info);
+    };
+    fetchUserInfo();
+  }, []);
 
   useEffect(() => {
     const fetchNotificationAccess = async () => {
@@ -197,7 +206,7 @@ export default function Voice() {
 
         {/* Content */}
         <View style={styles.content}>
-          <Text style={styles.greeting}>Hi, Anastacia</Text>
+          <Text style={styles.greeting}>Hi, {userInfo?.name || 'there'}</Text>
           <Text style={styles.instruction}>Say something</Text>
 
           
@@ -230,11 +239,8 @@ export default function Voice() {
 
         {/* Bottom Controls */}
         <View style={styles.bottomControls}>
-          <TouchableOpacity style={styles.sideButton} onPress={handleBack}>
-            <Image
-              source={require('@/assets/images/buttons/chat.png')}
-              style={styles.sideIcon}
-            />
+          <TouchableOpacity style={styles.sideButton}>
+            
           </TouchableOpacity>
 
           <View >
